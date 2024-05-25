@@ -69,10 +69,13 @@ class EchoServer:
 
 
     async def start(self):
+        '''Start the Modbus server and begin echoing.'''
+
         self.running = True
         await asyncio.gather(self.__echo_loop(), self.server.serve_forever())
 
     async def stop(self):
+        '''Stop the Modbus server.'''
         self.running = False
         await self.server.shutdown()
     

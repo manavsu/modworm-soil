@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///opt/homebrew/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.95 scan initiated Sat May 25 15:52:33 2024 as: nmap -p502 -oX - 192.168.1.0/24 -->
+<nmaprun scanner="nmap" args="nmap -p502 -oX - 192.168.1.0/24" start="1716677553"
+    startstr="Sat May 25 15:52:33 2024" version="7.95" xmloutputversion="1.05">
+    <scaninfo type="connect" protocol="tcp" numservices="1" services="502" />
+    <verbose level="0" />
+    <debugging level="0" />
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.30" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.230" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.72" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.254" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.126" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.224" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.177" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0" />
+        <address addr="192.168.1.238" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+    </hosthint>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="conn-refused" reason_ttl="0" />
+        <address addr="192.168.1.30" addrtype="ipv4" />
+        <hostnames>
+            <hostname name="meep.attlocal.net" type="PTR" />
+        </hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="8040" rttvar="4252" to="100000" />
+    </host>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="conn-refused" reason_ttl="0" />
+        <address addr="192.168.1.72" addrtype="ipv4" />
+        <hostnames>
+            <hostname name="Navneets-MBP.attlocal.net" type="PTR" />
+        </hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="62080" rttvar="67133" to="330612" />
+    </host>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="conn-refused" reason_ttl="0" />
+        <address addr="192.168.1.126" addrtype="ipv4" />
+        <hostnames>
+            <hostname name="TIZEN.attlocal.net" type="PTR" />
+        </hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="6195" rttvar="2797" to="100000" />
+    </host>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="syn-ack" reason_ttl="0" />
+        <address addr="192.168.1.177" addrtype="ipv4" />
+        <hostnames>
+            <hostname name="HP3744B8.attlocal.net" type="PTR" />
+        </hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="14936" rttvar="14482" to="100000" />
+    </host>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="conn-refused" reason_ttl="0" />
+        <address addr="192.168.1.224" addrtype="ipv4" />
+        <hostnames>
+</hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="10025" rttvar="9716" to="100000" />
+    </host>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="conn-refused" reason_ttl="0" />
+        <address addr="192.168.1.230" addrtype="ipv4" />
+        <hostnames>
+            <hostname name="unknown223386973629.attlocal.net" type="PTR" />
+        </hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="86515" rttvar="69401" to="364119" />
+    </host>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="conn-refused" reason_ttl="0" />
+        <address addr="192.168.1.238" addrtype="ipv4" />
+        <hostnames>
+            <hostname name="manav-2.attlocal.net" type="PTR" />
+        </hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="387" rttvar="2906" to="100000" />
+    </host>
+    <host starttime="1716677585" endtime="1716677585">
+        <status state="up" reason="syn-ack" reason_ttl="0" />
+        <address addr="192.168.1.254" addrtype="ipv4" />
+        <hostnames>
+            <hostname name="dsldevice.attlocal.net" type="PTR" />
+        </hostnames>
+        <ports>
+            <port protocol="tcp" portid="502">
+                <state state="closed" reason="conn-refused" reason_ttl="0" />
+                <service name="mbap" method="table" conf="3" />
+            </port>
+        </ports>
+        <times srtt="20668" rttvar="26951" to="128472" />
+    </host>
+    <runstats>
+        <finished time="1716677585" timestr="Sat May 25 15:53:05 2024"
+            summary="Nmap done at Sat May 25 15:53:05 2024; 256 IP addresses (8 hosts up) scanned in 32.56 seconds"
+            elapsed="32.56" exit="success" />
+        <hosts up="8" down="248" total="256" />
+    </runstats>
+</nmaprun>
