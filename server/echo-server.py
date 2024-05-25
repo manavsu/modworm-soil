@@ -2,7 +2,7 @@
 import asyncio
 import logging
 
-from pymodbus.datastore import ModbusSequentialDataBlock, ModbusServerContext, ModbusSlaveContext, ModbusSparseDataBlock,
+from pymodbus.datastore import ModbusSequentialDataBlock, ModbusServerContext, ModbusSlaveContext
 from pymodbus.device import ModbusDeviceIdentification
 from pymodbus.server import StartAsyncTcpServer, ServerStop
 
@@ -42,12 +42,12 @@ class EchoServer:
     Addr:1-1000 (0x0000-0x03E7) -> echoed from Analog Output Holding Registers Addr:1-1000 (0x03E8-0x07D0)
     """
 
-    async def __init__(self, host:str, port:int, num_clients:int, interval_seconds:int=1):
+    def __init__(self, host:str, port:int, num_clients:int, interval_seconds:int=1):
         self.interval_seconds = interval_seconds
         create_datablock = lambda cnt : ModbusSequentialDataBlock(0x0000, [0x00] * cnt)
-        context = {}
+        self.context = {}
         for i in range(num_clients):
-            context[i] = ModbusSlaveContext(
+            self.context[i] = ModbusSlaveContext(
                 di=create_datablock(1000),
                 co=create_datablock(2000),
                 hr=create_datablock(2000),
@@ -62,18 +62,18 @@ class EchoServer:
                 "MajorMinorRevision": VERSION,
             })
         
-        StartAsyncTcpServer(context, identity, (host, port))
+        StartAsyncTcpServer(self.context, identity, (host, port))
         _logger.info(f"Echo server listening on {host}:{port}")
-        await self.__start_echo()
     
-    async def __start_echo(self):
+    async def start_server(self):
+        _logger.info("Starting echo function")
         while True:
-            for slave in self.context:
+            for slave in self.context.values():
                 slave: ModbusSlaveContext
 
-                slave.setValues(OUTPUT_COILS, 0, slave.getValues(OUTPUT_COILS, 0, 1)[0] ^ 0x01)
+                slave.setValues(OUTPUT_COILS, 0, [slave.getValues(OUTPUT_COILS, 0, 1)[0] ^ 0x01])
                 slave.setValues(INPUT_CONTACTS, 0, slave.getValues(OUTPUT_COILS, 0, 1))
-                slave.setValues(HOLDING_REGISTERS, 0, slave.getValues(HOLDING_REGISTERS, 0, 1)[0] + 1)
+                slave.setValues(HOLDING_REGISTERS, 0, [slave.getValues(HOLDING_REGISTERS, 0, 1)[0] + 1])
                 slave.setValues(INPUT_REGISTERS, 0, slave.getValues(HOLDING_REGISTERS, 0, 1))
 
                 values = slave.getValues(HOLDING_REGISTERS, 1, 999)
@@ -85,3 +85,7 @@ class EchoServer:
                 slave.setValues(INPUT_CONTACTS, 1, values)
 
             await asyncio.sleep(1)
+
+server = EchoServer("127.0.0.1", 10003, 1)
+
+asyncio.run(server.start_server())
