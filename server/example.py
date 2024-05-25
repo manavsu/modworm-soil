@@ -1,7 +1,11 @@
 from echo_server import EchoServer
 import asyncio
 
-server = EchoServer("127.0.0.1", 10003, 1)
-server.start()
-input("Press Enter to stop the server\n")
-server.stop()
+async def main():
+    server = EchoServer("127.0.0.1", 10002, 1)
+    await server.start()
+
+asyncio.run(main())
+
+
+

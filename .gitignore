@@ -2,3 +2,6 @@
 /.venv
 .DS_Store
 .vscode/settings.json
+client/__pycache__/client.cpython-312.pyc
+server/__pycache__/echo_server.cpython-312.pyc
+server/__pycache__/utils.cpython-312.pyc
