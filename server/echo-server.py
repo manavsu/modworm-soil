@@ -41,6 +41,7 @@ class EchoServer:
     Addr:0 (0x0000) -> incremented continuously
     Addr:1-1000 (0x0000-0x03E7) -> echoed from Analog Output Holding Registers Addr:1-1000 (0x03E8-0x07D0)
     """
+
     async def __init__(self, host:str, port:int, num_clients:int, interval_seconds:int=1):
         self.interval_seconds = interval_seconds
         create_datablock = lambda cnt : ModbusSequentialDataBlock(0x0000, [0x00] * cnt)
