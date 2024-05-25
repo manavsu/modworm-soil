@@ -44,6 +44,7 @@ class EchoServer:
 
     def __init__(self, host:str, port:int, num_clients:int, interval_seconds:int=1):
         self.interval_seconds = interval_seconds
+        self.echo_task = None
         create_datablock = lambda cnt : ModbusSequentialDataBlock(0x0000, [0x00] * cnt)
         self.context = {}
         for i in range(num_clients):
@@ -65,27 +66,33 @@ class EchoServer:
         StartAsyncTcpServer(self.context, identity, (host, port))
         _logger.info(f"Echo server listening on {host}:{port}")
     
-    async def start_server(self):
+    def start(self):
+        self.echo_task = asyncio.create_task(self.__start())
+    
+    async def __start(self):
         _logger.info("Starting echo function")
-        while True:
-            for slave in self.context.values():
-                slave: ModbusSlaveContext
+        try:
+            while True:
+                for slave in self.context.values():
+                    slave: ModbusSlaveContext
 
-                slave.setValues(OUTPUT_COILS, 0, [slave.getValues(OUTPUT_COILS, 0, 1)[0] ^ 0x01])
-                slave.setValues(INPUT_CONTACTS, 0, slave.getValues(OUTPUT_COILS, 0, 1))
-                slave.setValues(HOLDING_REGISTERS, 0, [slave.getValues(HOLDING_REGISTERS, 0, 1)[0] + 1])
-                slave.setValues(INPUT_REGISTERS, 0, slave.getValues(HOLDING_REGISTERS, 0, 1))
+                    slave.setValues(OUTPUT_COILS, 0, [slave.getValues(OUTPUT_COILS, 0, 1)[0] ^ 0x01])
+                    slave.setValues(INPUT_CONTACTS, 0, slave.getValues(OUTPUT_COILS, 0, 1))
+                    slave.setValues(HOLDING_REGISTERS, 0, [slave.getValues(HOLDING_REGISTERS, 0, 1)[0] + 1])
+                    slave.setValues(INPUT_REGISTERS, 0, slave.getValues(HOLDING_REGISTERS, 0, 1))
 
-                values = slave.getValues(HOLDING_REGISTERS, 1, 999)
-                slave.setValues(HOLDING_REGISTERS, 1000, values)
-                slave.setValues(INPUT_REGISTERS, 1, values)
+                    values = slave.getValues(HOLDING_REGISTERS, 1, 999)
+                    slave.setValues(HOLDING_REGISTERS, 1000, values)
+                    slave.setValues(INPUT_REGISTERS, 1, values)
 
-                values = slave.getValues(OUTPUT_COILS, 1, 999)
-                slave.setValues(OUTPUT_COILS, 1000, values)
-                slave.setValues(INPUT_CONTACTS, 1, values)
+                    values = slave.getValues(OUTPUT_COILS, 1, 999)
+                    slave.setValues(OUTPUT_COILS, 1000, values)
+                    slave.setValues(INPUT_CONTACTS, 1, values)
+                await asyncio.sleep(1)
+        except asyncio.CancelledError:
+            return
 
-            await asyncio.sleep(1)
-
-server = EchoServer("127.0.0.1", 10003, 1)
-
-asyncio.run(server.start_server())
+    def stop(self):
+        _logger.info("Stopping echo function")
+        self.echo_task.cancel()
+        ServerStop()
