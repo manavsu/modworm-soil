@@ -42,14 +42,15 @@ class EchoServer:
     Addr:1-1000 (0x0000-0x03E7) -> echoed from Analog Output Holding Registers Addr:1-1000 (0x03E8-0x07D0)
     """
     async def __init__(self, host:str, port:int, num_clients:int, interval_seconds:int=1):
-        create_datablock = lambda : ModbusSequentialDataBlock(0x0000, [0x00] * 100)
+        self.interval_seconds = interval_seconds
+        create_datablock = lambda cnt : ModbusSequentialDataBlock(0x0000, [0x00] * cnt)
         context = {}
         for i in range(num_clients):
             context[i] = ModbusSlaveContext(
-                di=create_datablock(),
-                co=create_datablock(),
-                hr=create_datablock(),
-                ir=create_datablock(),
+                di=create_datablock(1000),
+                co=create_datablock(2000),
+                hr=create_datablock(2000),
+                ir=create_datablock(1000),
             )
         identity = ModbusDeviceIdentification(
             info_name={
@@ -76,10 +77,10 @@ class EchoServer:
 
                 values = slave.getValues(HOLDING_REGISTERS, 1, 999)
                 slave.setValues(HOLDING_REGISTERS, 1000, values)
-                slave.setValues(INPUT_REGISTERS, 1000, values)
+                slave.setValues(INPUT_REGISTERS, 1, values)
 
                 values = slave.getValues(OUTPUT_COILS, 1, 999)
                 slave.setValues(OUTPUT_COILS, 1000, values)
-                slave.setValues(INPUT_CONTACTS, 1000, values)
+                slave.setValues(INPUT_CONTACTS, 1, values)
 
             await asyncio.sleep(1)
