@@ -27,10 +27,10 @@ def scan_network(ip, port='502'):
 def scan_server(ip, port,slave_id=0):
     return jsonify(asyncio.run(server_scanner.scan_server(ip, port, slave_id)))
 
-@app.route("/rregs/<ip>/<port>/", methods=["GET"])
-@app.route("/rregs/<ip>/<port>/<slave_id>", methods=["GET"])
-def read_registers(ip, port, slave_id=0):
-    return jsonify(asyncio.run(server_scanner.read_registers(ip, port, slave_id)))
+@app.route("/rregs/<ip>/<port>/<func_code>/<address>/<count>/", methods=["GET"])
+@app.route("/rregs/<ip>/<port>/<func_code>/<address>/<count>/<slave_id>/", methods=["GET"])
+def read_registers(ip, port, func_code, address, count, slave_id=0):
+    return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, slave_id)))
 
 if __name__ == '__main__':
     app.run(debug=True)

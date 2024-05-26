@@ -76,6 +76,55 @@ class ScanningClient:
             i += 1
             
         return range_list
+    
+    async def read_regions(self, func_code, regions):
+        '''
+        Scans the address range using the appropriate
+
+        read_func: the read function to use
+        regions: a list of address-count pairs to scan
+        '''
+        if func_code == Tables.COILS:
+            read_func = self.client.read_coils
+        elif func_code == Tables.DISCRETE_INPUTS:
+            read_func = self.client.read_discrete_inputs
+        elif func_code == Tables.HOLDING_REGISTERS:
+            read_func = self.client.read_holding_registers
+        elif func_code == Tables.INPUT_REGISTERS:
+            read_func = self.client.read_input_registers
+        
+        results = {}
+        for region in regions:
+            result = await read_func(region[0], region[1], self.slave_id)
+            
+            if result.isError():
+                log.warning(f"{self.log_prefix} read_registers func_code={func_code} addr={region[0]} cnt={region[1]} -> {result}")
+                raise Exception(f"{self.log_prefix} error reading registers func_code={func_code} addr={region[0]} cnt={region[1]}")
+            results[region] = result.registers
+
+        log.debug(f"{self.log_prefix} read_registers func_code{func_code} -> scanned {len(regions)} regions")
+        return results
+
+    async def read_registers(self, func_code, address, count):
+        '''
+        Reads registers from the device.
+        '''
+        if func_code == Tables.COILS:
+            read_func = self.client.read_coils
+        if func_code == Tables.DISCRETE_INPUTS:
+            read_func = self.client.read_discrete_inputs
+        if func_code == Tables.HOLDING_REGISTERS:
+            read_func = self.client.read_holding_registers
+        if func_code == Tables.INPUT_REGISTERS:
+            read_func = self.client.read_input_registers
+        
+        result = await read_func(address, count, self.slave_id)
+        if result.isError():
+            log.warning(f"{self.log_prefix} read_registers func_code={func_code} addr={address} cnt={count} -> {result}")
+            raise Exception(f"{self.log_prefix} error reading registers func_code={func_code} addr={address} cnt={count}")
+        log.debug(f"{self.log_prefix} read_registers func_code={func_code} addr={address} cnt={count} -> {result}")
+
+        return result.bits if func_code == Tables.COILS or func_code == Tables.HOLDING_REGISTERS else result.registers
 
     async def scan_tables_linear(self):
         '''
@@ -113,8 +162,10 @@ async def scan_server(ip:str, port:int, slave_id=0):
     await scanner.connect()
     results["device_info"] = await scanner.read_device_information()
     results["tables"] = await scanner.scan_tables_linear()
-    log.debug(f"scan_server {ip}:{port} id={slave_id} -> {results}")
     scanner.close()
     return results
 
-
+async def read_registers(ip:str, port:int, func_code, address, count, slave_id=0):
+    reader = ScanningClient(ip, port, slave_id)
+    await reader.connect()
+    return await reader.read_registers(Tables(int(func_code)), int(address), int(count))
