@@ -10,3 +10,4 @@ scanners/__pycache__/network_scanner.cpython-312.pyc
 scanners/__pycache__/nmap.cpython-312.pyc
 scanners/__pycache__/scanning_client.cpython-312.pyc
 scanners/__pycache__/server_scanner.cpython-312.pyc
+.vscode
