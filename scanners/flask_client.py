@@ -16,15 +16,21 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 def echo(string):
     return string
 
-@app.route("/scan_server/<ip>/<port>", methods=["GET"])
-@app.route("/scan_server/<ip>/<port>/<slave_id>", methods=["GET"])
+@app.route("/nmap/<ip>", methods=["GET"])
+@app.route("/nmap/<ip>/<port>", methods=["GET"])
+def scan_network(ip, port='502'):
+    ip = ip.replace('+', '/')
+    return jsonify(network_scanner.scan_network(ip, port))
+
+@app.route("/smap/<ip>/<port>", methods=["GET"])
+@app.route("/smap/<ip>/<port>/<slave_id>", methods=["GET"])
 def scan_server(ip, port,slave_id=0):
     return jsonify(asyncio.run(server_scanner.scan_server(ip, port, slave_id)))
 
-@app.route("/scan_network/<ip>", methods=["GET"])
-@app.route("/scan_network/<ip>/<port>", methods=["GET"])
-def scan_network(ip, port='502'):
-    return jsonify(network_scanner.scan_network(ip, port))
+@app.route("/rregs/<ip>/<port>/", methods=["GET"])
+@app.route("/rregs/<ip>/<port>/<slave_id>", methods=["GET"])
+def read_registers(ip, port, slave_id=0):
+    return jsonify(asyncio.run(server_scanner.read_registers(ip, port, slave_id)))
 
 if __name__ == '__main__':
     app.run(debug=True)

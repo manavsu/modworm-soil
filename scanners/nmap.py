@@ -1,4 +1,3 @@
-import nmap
 import logging
 import xml.etree.ElementTree as ET
 import time
@@ -41,32 +40,3 @@ class Nmap:
         result.stdout
         log.debug(f"{command} completed in {time.time() - start_time:.2f} seconds")
         return result.stdout
-    
-    def __parse_nmap_xml(xml_string):
-        tree = ET.fromstring(xml_string)
-        root = tree.getroot()
-
-        for host in root.findall('host'):
-            status = host.find('status').get('state')
-            address = host.find('address').get('addr')
-            print(f'Host {address} is {status}')
-            
-            if status == 'up':
-                hostnames = host.find('hostnames')
-                if hostnames is not None:
-                    for hostname in hostnames.findall('hostname'):
-                        name = hostname.get('name')
-                        print(f'  Hostname: {name}')
-                
-                ports = host.find('ports')
-                if ports is not None:
-                    for port in ports.findall('port'):
-                        port_id = port.get('portid')
-                        protocol = port.get('protocol')
-                        state = port.find('state').get('state')
-                        service = port.find('service').get('name')
-                        print(f'  Port {port_id}/{protocol} is {state} (Service: {service})')
-
-a = Nmap()
-
-p
