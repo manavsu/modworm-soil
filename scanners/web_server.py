@@ -21,7 +21,7 @@ def echo(string):
 @app.route("/nmap/<ip>/<port>", methods=["GET"])
 def scan_network(ip, port='502'):
     ip = ip.replace('+', '/')
-    validate_cidr(ip)
+    validate_ip(ip) #TODO: change to validate_cidr
     validate_port(port)
     return jsonify(network_scanner.scan_network(ip, port))
 

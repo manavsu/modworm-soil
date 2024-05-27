@@ -1,51 +1,45 @@
 from ipaddress import *
 from typing import Tuple
 
-def validate_ip(address) -> IPv4Address | IPv6Address:
+def validate_ip(address) -> bool:
     try:
-        return ip_address(address)
+        ip_address(address)
+        return True
     except ValueError:
-        raise ValueError("Invalid IP address")
+        return False
 
-def validate_port(port) -> int:
+def validate_port(port) -> bool:
     try:
         port = int(port)
-        if port < 0 or port > 65535:
-            raise ValueError("Invalid port number")
-        return port
+        return port < 0 or port > 65535
     except ValueError:
-        raise ValueError("Invalid port number")
+        return False
     
-def validate_cidr(cidr) -> IPv4Network | IPv6Network:
+def validate_cidr(cidr) -> bool:
     try:
-        return ip_network(cidr, strict=False)
+        ip_network(cidr, strict=False)
+        return True
     except ValueError:
-        raise ValueError("Invalid CIDR")
+        return False
 
-def validate_modbus_address(address, count) -> Tuple[int, int]:
+def validate_modbus_address(address, count) -> bool:
     try:
         address = int(address)
         count = int(count)
-        if address < 0 or address > 65535 or count < 0 or count > 65535:
-            raise ValueError("Invalid Modbus address or count")
-        return address, count
+        return address < 0 or address > 65535 or count < 0 or count > 65535
     except ValueError:
-        raise ValueError("Invalid Modbus address or count")
+        return False
 
-def validate_slave_id(slave_id) -> int:
+def validate_slave_id(slave_id) -> bool:
     try:
         slave_id = int(slave_id)
-        if slave_id < 0 or slave_id > 255:
-            raise ValueError("Invalid Modbus slave ID")
-        return slave_id
+        return slave_id < 0 or slave_id > 255
     except ValueError:
-        raise ValueError("Invalid Modbus slave ID")
+        return False
 
-def validate_func_code(func_code) -> int:
+def validate_func_code(func_code) -> bool:
     try:
         func_code = int(func_code)
-        if (func_code > 0 and func_code < 8) or func_code == 15 or func_code == 16:
-            return func_code
-        raise ValueError("Invalid Modbus function code")
+        return (func_code > 0 and func_code < 8) or func_code == 15 or func_code == 16
     except ValueError:
-        raise ValueError("Invalid Modbus function code")
+        return False
