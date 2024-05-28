@@ -46,7 +46,7 @@ class EchoServer:
         self.interval_seconds = interval_seconds
         self.address = (host, port)
         self.running = False
-        create_datablock = lambda cnt : ModbusSequentialDataBlock(0x0000, [0x00] * cnt)
+        create_datablock = lambda cnt : ModbusSequentialDataBlock(0x0000, [0x0000] * cnt)
         slave_contexts = {}
         for i in range(num_clients):
             slave_contexts[i] = ModbusSlaveContext(
@@ -84,7 +84,6 @@ class EchoServer:
         while self.running:
             for slave_id in self.context.slaves():
                 slave:ModbusSlaveContext = self.context[slave_id]
-
                 slave.setValues(OUTPUT_COILS, 0, [slave.getValues(OUTPUT_COILS, 0, 1)[0] ^ 0x01])
                 slave.setValues(INPUT_CONTACTS, 0, slave.getValues(OUTPUT_COILS, 0, 1))
                 slave.setValues(HOLDING_REGISTERS, 0, [slave.getValues(HOLDING_REGISTERS, 0, 1)[0] + 1])

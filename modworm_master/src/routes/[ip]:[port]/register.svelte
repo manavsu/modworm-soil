@@ -1,6 +1,7 @@
 <script lang="ts">
     import "$lib/app.css";
     import { ModbusDataType } from "$lib/modbus_data_type";
+    
     export let value:string;
     export let address:number;
     export let type: ModbusDataType;

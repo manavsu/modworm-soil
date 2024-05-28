@@ -7,21 +7,25 @@
     import type { RegisterStore } from "$lib/register_store";
     import LoadingSnake from '$lib/loadingsnake.svelte';
 
-	export let ip: string = '127.0.0.1';
-	export let port: number = 5002;
-	export let func_code: number = 4;
-	export let address: number = 0;
-	export let count: number = 100;
+	export let ip: string;
+	export let port: string;
+	export let func_code: number;
+	export let address: number;
+	export let count: number;
 
 	let registers: Array<RegisterStore> = [];
+	console.log(typeof address)
 
 	async function ReadAllRegisters() {
 		try {
 			const result = await ReadRegisters(ip, port, func_code, address, count);
+
 			for (let i = 0; i < count; i++) {
-				registers[i] = { address: address + i, value: result[i], type: ModbusDataType.UInt16 };
+				registers[i] = { address: Number(address) + i, value: result[i], type: ModbusDataType.UInt16 };
+				console.log(registers[i].address)
 			}
 			registers = [...registers];
+			console.log(registers)
 		} catch (error) {
 			console.error(error);
 		}

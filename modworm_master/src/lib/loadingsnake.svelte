@@ -63,7 +63,6 @@
             if (!this.in_loop && this.num_turns >= 1) this.in_loop = true;
 			this.blocks_since_last_turn = 0;
             this.num_turns++;
-			console.log(this.dir);
 		}
 	}
 

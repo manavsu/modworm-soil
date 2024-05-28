@@ -124,7 +124,7 @@ class ScanningClient:
             raise Exception(f"{self.log_prefix} error reading registers func_code={func_code} addr={address} cnt={count}")
         log.debug(f"{self.log_prefix} read_registers func_code={func_code} addr={address} cnt={count} -> {result}")
 
-        return result.bits if func_code == Tables.COILS or func_code == Tables.HOLDING_REGISTERS else result.registers
+        return result.bits if func_code == Tables.COILS or func_code == Tables.DISCRETE_INPUTS else result.registers
 
     async def scan_tables_linear(self):
         '''

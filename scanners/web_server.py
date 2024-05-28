@@ -5,6 +5,7 @@ import server_scanner
 import network_scanner
 import asyncio
 from garbage_checker import *
+from time import sleep
 
 logging.basicConfig()
 log = logging.getLogger("FlaskAPI")
@@ -33,6 +34,7 @@ def scan_network(ip, port='502'):
         ]
     )
     if bad_request:
+        log.error(f"{scan_network.__name__} {bad_request[1]} : {bad_request[0].json["error"]}")
         return bad_request
     return jsonify(network_scanner.scan_network(ip, port))
 
@@ -47,6 +49,7 @@ def scan_server(ip, port,slave_id=0):
         ]
     )
     if bad_request:
+        log.error(f"{scan_server.__name__} {bad_request[1]} : {bad_request[0].json["error"]}")
         return bad_request
     return jsonify(asyncio.run(server_scanner.scan_server(ip, port, slave_id)))
 
@@ -63,9 +66,8 @@ def read_registers(ip, port, func_code, address, count, slave_id=0):
         ]
     )
     if bad_request:
+        log.error(f"{read_registers.__name__} {bad_request[1]} : {bad_request[0].json["error"]}")
         return bad_request
-    address, count = validate_modbus_address(address, count)
-    slave_id = validate_slave_id(slave_id)
     return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, slave_id)))
 
 if __name__ == '__main__':
