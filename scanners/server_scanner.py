@@ -12,6 +12,8 @@ logging.basicConfig()
 log = logging.getLogger("ServerScanner")
 log.setLevel(logging.DEBUG)
 
+MAX_READ_COUNT = 125
+
 class Tables(enum.Enum):
     COILS = 0x01
     DISCRETE_INPUTS = 0x02
@@ -120,8 +122,7 @@ class ScanningClient:
         
         result = await read_func(address, count, self.slave_id)
         if result.isError():
-            log.warning(f"{self.log_prefix} read_registers func_code={func_code} addr={address} cnt={count} -> {result}")
-            raise Exception(f"{self.log_prefix} error reading registers func_code={func_code} addr={address} cnt={count}")
+            raise Exception(f"{self.log_prefix} error reading registers func_code={func_code} addr={address} cnt={count} -> {result}")
         log.debug(f"{self.log_prefix} read_registers func_code={func_code} addr={address} cnt={count} -> {result}")
 
         return result.bits if func_code == Tables.COILS or func_code == Tables.DISCRETE_INPUTS else result.registers
@@ -166,6 +167,14 @@ async def scan_server(ip:str, port:int, slave_id=0):
     return results
 
 async def read_registers(ip:str, port:int, func_code, address, count, slave_id=0):
+    address = int(address)
+    count = int(count)
+    registers = []
     reader = ScanningClient(ip, port, slave_id)
     await reader.connect()
-    return await reader.read_registers(Tables(int(func_code)), int(address), int(count))
+    read_count = 0
+    while (read_count < count):
+        registers += await reader.read_registers(Tables(int(func_code)), address + read_count, min(count - read_count, MAX_READ_COUNT))
+        log.info(f"Reading {min(count - read_count, MAX_READ_COUNT)} registers from {address + read_count}")
+        read_count += MAX_READ_COUNT
+    return registers
