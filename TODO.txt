@@ -1,0 +1,8 @@
+add a ping feature to check on startup if the server is available
+drop down menus that fade everything in the back
+use ping feature to figure out if ports are open for use by simulators
+auto network mapping
+auto register map mapping
+read blocks
+ability to change the data type to view the data in
+better message tabs

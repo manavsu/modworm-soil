@@ -12,7 +12,7 @@
 
     function handleSubmit() {
         ip = ip || "127.0.0.1";
-        port = port || "5002";
+        port = port || "50902";
     }
 
 </script>
@@ -26,7 +26,7 @@
     <form class="flex flex-col" action="/{ip}:{port}" on:submit={handleSubmit}>
         <div class="relative flex flex-row h-fit">
             <input type="text" class="bg-gray-800 p-2 mr-1 rounded-bl-xl focus:outline-none focus:ring-2 focus:ring-gray-700 hover:ring-2 hover:ring-gray-800" bind:value={ip} placeholder="127.0.0.1">
-            <input type="text" class="bg-gray-800 p-2 rounded-tr-xl focus:outline-none focus:ring-2 focus:ring-gray-700 hover:ring-2 hover:ring-gray-800" bind:value={port} placeholder="5002"> <!-- TODO -->
+            <input type="text" class="bg-gray-800 p-2 rounded-tr-xl focus:outline-none focus:ring-2 focus:ring-gray-700 hover:ring-2 hover:ring-gray-800" bind:value={port} placeholder="50902"> <!-- TODO -->
             <div class="absolute -top-3 left-3 text-gray-400 text-m">IP</div>
             <div class="absolute -bottom-3 right-3 text-gray-400 text-m">port</div>
         </div>

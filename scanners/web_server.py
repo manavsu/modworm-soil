@@ -71,5 +71,5 @@ def read_registers(ip, port, func_code, address, count, slave_id=0):
     return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, slave_id)))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=50901, debug=True)
 

@@ -14,18 +14,15 @@
 	export let count: number;
 
 	let registers: Array<RegisterStore> = [];
-	console.log(typeof address)
-
+		
 	async function ReadAllRegisters() {
 		try {
 			const result = await ReadRegisters(ip, port, func_code, address, count);
 
 			for (let i = 0; i < count; i++) {
 				registers[i] = { address: Number(address) + i, value: result[i], type: ModbusDataType.UInt16 };
-				console.log(registers[i].address)
 			}
 			registers = [...registers];
-			console.log(registers)
 		} catch (error) {
 			console.error(error);
 		}

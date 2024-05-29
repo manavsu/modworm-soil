@@ -6,7 +6,6 @@
   import LoadingSnake from '$lib/loadingsnake.svelte';
 
   export let data;
-
 </script>
 
 {#await data.discovered}
@@ -17,4 +16,6 @@
   {:else}
     <Error path="/" message="unable to discover {data.ip} : {data.port}"/>
   {/if}
+{:catch error}
+  <Error path="/" message={error.message}/>
 {/await}

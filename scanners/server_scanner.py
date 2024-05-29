@@ -20,7 +20,7 @@ class Tables(enum.Enum):
 
 class ScanningClient:
     def __init__(self, ip, port, slave_id=0) -> None:
-        self.log_prefix = f"scan_client {ip}:{port} id={slave_id}"
+        self.log_prefix = f"scanning_client {ip}:{port} id={slave_id}"
         log.debug(f"{self.log_prefix} created")
         self.client = AsyncModbusTcpClient(ip, port)
         self.slave_id = slave_id
