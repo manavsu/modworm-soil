@@ -1,6 +1,6 @@
 <script lang="ts"> 
     import { ModbusTable, function_code} from "$lib/modbus_table";
-	import RegisterMap from "./registermap.svelte";
+	import RegisterMap from "./register_map.svelte";
     export let ip: string;
     export let port: string;
     

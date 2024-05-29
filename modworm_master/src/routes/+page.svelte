@@ -5,7 +5,7 @@
 	import { ModbusDataType } from '$lib/modbus_data_type';
 	import { ReadRegisters } from '$lib/modbus_client';
 	import type { RegisterStore } from '$lib/register_store';
-    import LoadingSnake from '$lib/loadingsnake.svelte';
+    import LoadingSnake from '$lib/loading_snake.svelte';
 
     let ip: string = "";
     let port: string = ""; // TODO

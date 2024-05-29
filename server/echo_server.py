@@ -79,7 +79,7 @@ class EchoServer:
         self.running = False
         await self.server.shutdown()
     
-    async def __echo_loop(self):
+    async def __echo_loop(self) -> None:
         log.info("Starting echo function")
         while self.running:
             for slave_id in self.context.slaves():

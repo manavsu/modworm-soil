@@ -5,7 +5,7 @@
     import { ModbusDataType } from "$lib/modbus_data_type";
     import { ReadRegisters } from "$lib/modbus_client";
     import type { RegisterStore } from "$lib/register_store";
-    import LoadingSnake from '$lib/loadingsnake.svelte';
+    import LoadingSnake from '$lib/loading_snake.svelte';
 
 	export let ip: string;
 	export let port: string;
@@ -14,7 +14,7 @@
 	export let count: number;
 
 	let registers: Array<RegisterStore> = [];
-		
+
 	async function ReadAllRegisters() {
 		try {
 			const result = await ReadRegisters(ip, port, func_code, address, count);

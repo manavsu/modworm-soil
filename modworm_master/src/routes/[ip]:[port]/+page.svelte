@@ -3,7 +3,7 @@
   import Error from '$lib/error.svelte';
   import Region from './region.svelte';
 
-  import LoadingSnake from '$lib/loadingsnake.svelte';
+  import LoadingSnake from '$lib/loading_snake.svelte';
 
   export let data;
 </script>

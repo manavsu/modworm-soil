@@ -34,8 +34,8 @@ class ScanningClient:
     def close(self):
         self.client.close()
     
-    async def read_device_information(self, read_code=DeviceInformation.EXTENDED):
-        result:ReadDeviceInformationResponse = await self.client.read_device_information(read_code=read_code, object_id=self.slave_id)
+    async def read_device_information(self, read_code: DeviceInformation = DeviceInformation.EXTENDED):
+        result = ReadDeviceInformationResponse(await self.client.read_device_information(read_code=read_code.value, object_id=self.slave_id))
         if result.isError():
             log.warning(f"{self.log_prefix} read_device_information code={read_code} -> {result}")
         return self.format_device_info(result)
@@ -157,7 +157,7 @@ class ScanningClient:
         }
         return {label_map[key] : str(info.information[key]) for key in info.information}
 
-async def scan_server(ip:str, port:int, slave_id=0):
+async def scan_server(ip:str, port:str, slave_id=0):
     results = {}
     scanner = ScanningClient(ip, port, slave_id)
     await scanner.connect()
@@ -166,7 +166,7 @@ async def scan_server(ip:str, port:int, slave_id=0):
     scanner.close()
     return results
 
-async def read_registers(ip:str, port:int, func_code, address, count, slave_id=0):
+async def read_registers(ip:str, port:str, func_code:str, address, count, slave_id:str='0'):
     address = int(address)
     count = int(count)
     registers = []
@@ -178,3 +178,10 @@ async def read_registers(ip:str, port:int, func_code, address, count, slave_id=0
         log.info(f"Reading {min(count - read_count, MAX_READ_COUNT)} registers from {address + read_count}")
         read_count += MAX_READ_COUNT
     return registers
+
+async def read_device_info(ip:str, port:str, slave_id=0):
+    reader = ScanningClient(ip, port, slave_id)
+    await reader.connect()
+    info = await reader.read_device_information()
+    reader.close()
+    return info
