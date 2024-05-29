@@ -70,10 +70,6 @@ def read_registers(ip, port, func_code, address, count, slave_id=0):
         return bad_request
     return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, slave_id)))
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=50901, debug=True)
-
-
 @app.route("/deviceinfo/<ip>/<port>/", methods=["GET"])
 @app.route("/deviceinfo/<ip>/<port>/<slave_id>/", methods=["GET"])
 def device_info(ip, port, slave_id=0):
@@ -88,3 +84,9 @@ def device_info(ip, port, slave_id=0):
         log.error(f"{device_info.__name__} {bad_request[1]} : {bad_request[0].json["error"]}")
         return bad_request
     return jsonify(asyncio.run(server_scanner.read_device_info(ip, port, slave_id)))
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=50901, debug=True)
+
+

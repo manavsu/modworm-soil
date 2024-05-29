@@ -35,7 +35,7 @@ class ScanningClient:
         self.client.close()
     
     async def read_device_information(self, read_code: DeviceInformation = DeviceInformation.EXTENDED):
-        result = ReadDeviceInformationResponse(await self.client.read_device_information(read_code=read_code.value, object_id=self.slave_id))
+        result:ReadDeviceInformationResponse = await self.client.read_device_information(read_code=read_code.value, object_id=self.slave_id) # type: ignore
         if result.isError():
             log.warning(f"{self.log_prefix} read_device_information code={read_code} -> {result}")
         return self.format_device_info(result)
