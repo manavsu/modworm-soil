@@ -14,9 +14,10 @@
 	export let count: number;
 
 	let registers: Array<RegisterStore> = [];
-
+	
 	async function ReadAllRegisters() {
 		try {
+ 			if(registers.length != count || (registers[0]?.address != address ?? 0)) registers = [];
 			const result = await ReadRegisters(ip, port, func_code, address, count);
 
 			for (let i = 0; i < count; i++) {
