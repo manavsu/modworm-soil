@@ -5,7 +5,7 @@ from pymodbus.mei_message import ReadDeviceInformationResponse
 from pymodbus.constants import DeviceInformation
 import enum
 import time
-import concurrent.futures
+from utils import *
 
 
 logging.basicConfig()
@@ -173,19 +173,30 @@ async def scan_server(ip:str, port:str, slave_id=0):
     scanner.close()
     return results
 
-async def read_registers(ip:str, port:str, func_code:str, address, count, slave_id:str='0'):
+async def read_registers(ip:str, port:str, func_code, address, count, data_type, slave_id:str='0'):
     address = int(address)
     count = int(count)
+    func_code = Tables(int(func_code))
+    data_type = ModbusDataType(int(data_type))
     registers = []
     reader = ScanningClient(ip, port, slave_id)
     await reader.connect()
     read_count = 0
     while (read_count < count):
-        registers += await reader.read_registers(Tables(int(func_code)), address + read_count, min(count - read_count, MAX_READ_COUNT))
+        registers += await reader.read_registers(func_code, address + read_count, min(count - read_count, MAX_READ_COUNT))
         log.info(f"Reading {min(count - read_count, MAX_READ_COUNT)} registers from {address + read_count}")
         read_count += MAX_READ_COUNT
-    
-    return registers
+    if data_type == ModbusDataType.UINT16:
+        return [int(register) for register in registers]
+    if data_type == ModbusDataType.INT16:
+        return [Signed(register) for register in registers]
+    if data_type == ModbusDataType.HEX:
+        return [Hex(register) for register in registers]
+    if data_type == ModbusDataType.ASCII:
+        return [ASCII(register) for register in registers]
+    if data_type == ModbusDataType.BOOL:
+        return [Bool(register) for register in registers]
+    raise Exception(f"Invalid data type {data_type}")
 
 async def read_device_info(ip:str, port:str, slave_id=0):
     reader = ScanningClient(ip, port, slave_id)
