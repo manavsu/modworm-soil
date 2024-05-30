@@ -20,6 +20,13 @@ class Tables(enum.Enum):
     HOLDING_REGISTERS = 0x03
     INPUT_REGISTERS = 0x04
 
+class ModbusDataType(enum.Enum):
+    UINT16 = 1
+    INT16 = 2
+    HEX = 3
+    ASCII = 4
+    BOOL = 5
+
 class ScanningClient:
     def __init__(self, ip, port, slave_id=0) -> None:
         self.log_prefix = f"scanning_client {ip}:{port} id={slave_id}"
@@ -177,6 +184,7 @@ async def read_registers(ip:str, port:str, func_code:str, address, count, slave_
         registers += await reader.read_registers(Tables(int(func_code)), address + read_count, min(count - read_count, MAX_READ_COUNT))
         log.info(f"Reading {min(count - read_count, MAX_READ_COUNT)} registers from {address + read_count}")
         read_count += MAX_READ_COUNT
+    
     return registers
 
 async def read_device_info(ip:str, port:str, slave_id=0):

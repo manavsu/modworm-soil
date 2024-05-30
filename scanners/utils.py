@@ -3,6 +3,18 @@ def Signed(ushort):
         return -(ushort ^ 0xFFFF) - 1
     return ushort
 
+def Hex(ushort):
+    return f"0x{ushort:04X}"
+
+def Binary(ushort):
+    return f"0b{ushort:016b}"
+
+def ASCII(ushort):
+    return chr(ushort)
+
+def Bool(ushort):
+    return bool(ushort)
+
 def Scaled(scale_factor):
     return 10**scale_factor
 

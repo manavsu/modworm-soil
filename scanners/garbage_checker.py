@@ -1,5 +1,6 @@
 from ipaddress import *
 from typing import Tuple
+from server_scanner import ModbusDataType
 
 def validate_ip(address) -> bool:
     try:
@@ -43,3 +44,6 @@ def validate_func_code(func_code) -> bool:
         return 1 <= func_code <= 7 or func_code == 15 or func_code == 16
     except ValueError:
         return False
+
+def validate_date_type(data_type) -> bool:
+    return int(data_type) in [x.value for x in ModbusDataType]

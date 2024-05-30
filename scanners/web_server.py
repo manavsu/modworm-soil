@@ -29,8 +29,8 @@ def scan_network(ip, port='502'):
     ip = ip.replace('+', '/')
     bad_request = validate(
         [
-            (lambda: validate_ip(ip), "Invalid IP address"),
-            (lambda: validate_port(port), "Invalid port number")
+            (lambda: validate_ip(ip), "invalid IP address"),
+            (lambda: validate_port(port), "invalid port number")
         ]
     )
     if bad_request:
@@ -43,9 +43,9 @@ def scan_network(ip, port='502'):
 def scan_server(ip, port,slave_id=0):
     bad_request = validate(
         [
-            (lambda: validate_ip(ip), "Invalid IP address"),
-            (lambda: validate_port(port), "Invalid port number"),
-            (lambda: validate_slave_id(slave_id), "Invalid slave ID")
+            (lambda: validate_ip(ip), "invalid IP address"),
+            (lambda: validate_port(port), "invalid port number"),
+            (lambda: validate_slave_id(slave_id), "invalid slave ID")
         ]
     )
     if bad_request:
@@ -53,31 +53,32 @@ def scan_server(ip, port,slave_id=0):
         return bad_request
     return jsonify(asyncio.run(server_scanner.scan_server(ip, port, slave_id)))
 
-@app.route("/rregs/<ip>/<port>/<func_code>/<address>/<count>/", methods=["GET"])
-@app.route("/rregs/<ip>/<port>/<func_code>/<address>/<count>/<slave_id>/", methods=["GET"])
-def read_registers(ip, port, func_code, address, count, slave_id=0):
+@app.route("/rregs/<ip>/<port>/<func_code>/<address>/<count>/<data_type>/", methods=["GET"])
+@app.route("/rregs/<ip>/<port>/<func_code>/<address>/<count>/<data_type>/<slave_id>/", methods=["GET"])
+def read_registers(ip, port, func_code, address, count, data_type, slave_id=0):
     bad_request = validate(
         [
-            (lambda: validate_ip(ip), "Invalid IP address"),
-            (lambda: validate_port(port), "Invalid port number"),
-            (lambda: validate_func_code(func_code), "Invalid function code"),
-            (lambda: validate_modbus_address(address, count), "Invalid address or count"),
-            (lambda: validate_slave_id(slave_id), "Invalid slave ID")
+            (lambda: validate_ip(ip), "invalid IP address"),
+            (lambda: validate_port(port), "invalid port number"),
+            (lambda: validate_func_code(func_code), "invalid function code"),
+            (lambda: validate_modbus_address(address, count), "invalid address or count"),
+            (lambda: validate_date_type(data_type), "invalid data type"),
+            (lambda: validate_slave_id(slave_id), "invalid slave ID")
         ]
     )
     if bad_request:
         log.error(f"{read_registers.__name__} {bad_request[1]} : {bad_request[0].json["error"]}")
         return bad_request
-    return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, slave_id)))
+    return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, data_type, slave_id)))
 
 @app.route("/deviceinfo/<ip>/<port>/", methods=["GET"])
 @app.route("/deviceinfo/<ip>/<port>/<slave_id>/", methods=["GET"])
 def device_info(ip, port, slave_id=0):
     bad_request = validate(
         [
-            (lambda: validate_ip(ip), "Invalid IP address"),
-            (lambda: validate_port(port), "Invalid port number"),
-            (lambda: validate_slave_id(slave_id), "Invalid slave ID")
+            (lambda: validate_ip(ip), "invalid IP address"),
+            (lambda: validate_port(port), "invalid port number"),
+            (lambda: validate_slave_id(slave_id), "invalid slave ID")
         ]
     )
     if bad_request:
