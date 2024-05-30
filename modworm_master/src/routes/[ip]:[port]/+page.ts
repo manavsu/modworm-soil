@@ -9,16 +9,17 @@ export async function load({ fetch, params }) {
 
 	async function try_discover() {
 		const response = await fetch(`${BASE_URL}/nmap/${ip}/${port}`);
-		if (!response.ok) throw error(response.status, await response.json());
+		console.log(response.status);
+		if (!response.ok) error(response.status, await response.json());
 		const servers = await response.json();
-	
+
 		for (const server of servers) {
 			if (server.address === ip && server.port === port) return true;
 		}
 		return false;
 	}
 
-	return { discovered: try_discover(), ip, port};
+	return { discovered:await try_discover(), ip, port};
 }
 
 

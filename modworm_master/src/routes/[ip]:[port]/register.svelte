@@ -7,8 +7,8 @@
     export let type: ModbusDataType;
 </script>
 
-<div class="relative text-xl text-right p-2 my-2 mx-1 w-24 h-fit bg-gray-800 rounded-tr-md rounded-bl-md">
-    <div class="absolute -top-2 left-1 text-gray-400 text-xs">{address}</div>
+<div class="relative text-l text-right p-2 my-2 mx-1 w-24 h-fit bg-gray-800 rounded-tr-md rounded-bl-md">
+    <div class="absolute -top-3 left-1 text-gray-400 text-s">{address}</div>
     <div class="absolute -bottom-2 right-1 text-gray-400 text-xs">{type}</div>
     {value}
 </div>
