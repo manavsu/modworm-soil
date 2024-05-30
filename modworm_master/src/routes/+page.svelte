@@ -1,18 +1,12 @@
 <script lang="ts">
 	import '$lib/app.css';
-	import { onMount } from 'svelte';
-	import Register from './[ip]:[port]/register.svelte';
-	import { ModbusDataType } from '$lib/modbus_data_type';
-	import { ReadRegisters } from '$lib/modbus_client';
-	import type { RegisterStore } from '$lib/register_store';
-    import LoadingSnake from '$lib/loading_snake.svelte';
 
     let ip: string = "";
-    let port: string = ""; // TODO
+    let port: string = "";
 
     function handleSubmit() {
         ip = ip || "127.0.0.1";
-        port = port || "50902";
+        port = port || "50902"; //TODO
     }
 
 </script>

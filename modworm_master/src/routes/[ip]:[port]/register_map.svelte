@@ -2,7 +2,7 @@
     import "$lib/app.css";
     import { onMount } from 'svelte';
     import Register from "./register.svelte";
-    import { ModbusDataType } from "$lib/modbus_data_type";
+    import { ModbusDataType, data_type, int_to_data_type } from "$lib/modbus_data_type";
     import { ReadRegisters } from "$lib/modbus_client";
     import type { RegisterStore } from "$lib/register_store";
     import LoadingSnake from '$lib/loading_snake.svelte';
@@ -12,16 +12,17 @@
 	export let func_code: number;
 	export let address: number;
 	export let count: number;
+	export let type: number;
 
 	let registers: Array<RegisterStore> = [];
 	
 	async function ReadAllRegisters() {
 		try {
  			if(registers.length != count || (registers[0]?.address != address ?? 0)) registers = [];
-			const result = await ReadRegisters(ip, port, func_code, address, count);
-
+			const result = await ReadRegisters(ip, port, func_code, address, count, type);
+			let data_type = int_to_data_type(type);
 			for (let i = 0; i < count; i++) {
-				registers[i] = { address: Number(address) + i, value: result[i], type: ModbusDataType.UInt16 };
+				registers[i] = { address: Number(address) + i, value: result[i], type: data_type};
 			}
 			registers = [...registers];
 		} catch (error) {

@@ -1,6 +1,6 @@
 <script lang="ts"> 
     import { ModbusTable, function_code} from "$lib/modbus_table";
-    import { ModbusDataType } from "$lib/modbus_data_type";
+    import { ModbusDataType, data_type } from "$lib/modbus_data_type";
 	import RegisterMap from "./register_map.svelte";
     export let ip: string;
     export let port: string;
@@ -14,9 +14,11 @@
     let selected_table = ModbusTable.HoldingRegisters;
     let selected_data_type = ModbusDataType.Hex;
     let func_code = function_code(selected_table);
+    let type = data_type(selected_data_type);
 
     $: func_code = function_code(selected_table);
-
+    $: type = data_type(selected_data_type);
+    
     function update_map() {
         address = addr;
         count = cnt;
@@ -56,6 +58,6 @@
     </div>
     
     <div class="lg:mt-24 mt-36 mx-10">
-        <RegisterMap {ip} {port} {address} {count} {func_code} />
+        <RegisterMap {ip} {port} {address} {count} {func_code} {type} />
     </div>
 </div>
