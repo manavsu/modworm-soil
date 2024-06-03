@@ -1,0 +1,3 @@
+[submodule "modworm-sod"]
+	path = modworm-sod
+	url = https://github.com/manavsu/modworm-sod.git
