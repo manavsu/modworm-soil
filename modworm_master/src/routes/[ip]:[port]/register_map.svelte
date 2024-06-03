@@ -15,7 +15,7 @@
 	export let count: number;
 	export let type: number;
 
-	let read_error: unknown;
+	let read_error: any;
 	let registers: Array<RegisterStore> = [];
 	
 	async function ReadAllRegisters() {

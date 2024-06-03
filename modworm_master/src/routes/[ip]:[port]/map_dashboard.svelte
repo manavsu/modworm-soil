@@ -26,8 +26,8 @@
 
 </script>
   
-<div class="relative">
-    <div class="fixed bg-black top-0 left-0 flex flex-row justify-between p-5 w-screen items-center z-10 bg-opacity-90">
+<div class="flex flex-col h-dvh">
+    <div class="flex flex-row justify-between p-5 w-screen items-center z-10 bg-opacity-90">
         <a href="/" class="text-xl ml-5 text-center text-gray-400 hover:text-white opacity-100">{ip}:{port}</a>
     
         <div class="flex flex-row lg:flex-col">
@@ -57,7 +57,7 @@
         </div>
     </div>
     
-    <div class="lg:mt-24 mt-36 mx-10">
+    <div class="flex-grow px-10 overscroll-contain overflow-auto scrollbar-thin scrollbar-thumb-gray-600">
         <RegisterMap {ip} {port} {address} {count} {func_code} {type} />
     </div>
 </div>
