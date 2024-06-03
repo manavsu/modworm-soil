@@ -14,10 +14,12 @@ log.setLevel(logging.INFO)
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+BAD_REQUEST_STATUS = 400
+
 def validate(func_msg_pairs):
     for func, fail_msg in func_msg_pairs:
         if not func():
-            return jsonify({"error": fail_msg}), 400
+            return jsonify({"error": fail_msg}), BAD_REQUEST_STATUS
 
 @app.route("/echo/<string>/", methods=["GET"])
 def echo(string):
@@ -69,7 +71,10 @@ def read_registers(ip, port, func_code, address, count, data_type, slave_id=0):
     if bad_request:
         log.error(f"{read_registers.__name__} {bad_request[1]} : {bad_request[0].json["error"]}")
         return bad_request
-    return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, data_type, slave_id)))
+    try:
+        return jsonify(asyncio.run(server_scanner.read_registers(ip, port, func_code, address, count, data_type, slave_id)))
+    except Exception as e:
+        return jsonify({"error": str(e)}), BAD_REQUEST_STATUS
 
 @app.route("/deviceinfo/<ip>/<port>/", methods=["GET"])
 @app.route("/deviceinfo/<ip>/<port>/<slave_id>/", methods=["GET"])
@@ -85,6 +90,7 @@ def device_info(ip, port, slave_id=0):
         log.error(f"{device_info.__name__} {bad_request[1]} : {bad_request[0].json["error"]}")
         return bad_request
     return jsonify(asyncio.run(server_scanner.read_device_info(ip, port, slave_id)))
+
 
 
 if __name__ == '__main__':

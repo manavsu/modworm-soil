@@ -4,6 +4,7 @@
   import MapDashboard from './map_dashboard.svelte';
 
   import LoadingSnake from '$lib/loading_snake.svelte';
+	import { error } from "@sveltejs/kit";
 
   export let data;
 </script>

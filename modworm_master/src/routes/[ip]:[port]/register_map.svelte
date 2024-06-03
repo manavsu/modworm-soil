@@ -6,6 +6,7 @@
     import { ReadRegisters } from "$lib/modbus_client";
     import type { RegisterStore } from "$lib/register_store";
     import LoadingSnake from '$lib/loading_snake.svelte';
+	import Error from "$lib/error.svelte";
 
 	export let ip: string;
 	export let port: string;
@@ -14,6 +15,7 @@
 	export let count: number;
 	export let type: number;
 
+	let read_error: unknown;
 	let registers: Array<RegisterStore> = [];
 	
 	async function ReadAllRegisters() {
@@ -25,8 +27,9 @@
 				registers[i] = { address: Number(address) + i, value: result[i], type: data_type};
 			}
 			registers = [...registers];
+			read_error = null;
 		} catch (error) {
-			console.error(error);
+			read_error = error;
 		}
 	}
 
@@ -47,7 +50,9 @@
 	}
 </style>
 
-{#if registers.length == 0}
+{#if read_error != null}
+<Error message={read_error.body.error}/>
+{:else if registers.length == 0}
     <LoadingSnake />
 {:else}
 	<div class="grid grid-col-fill justify-items-center">
