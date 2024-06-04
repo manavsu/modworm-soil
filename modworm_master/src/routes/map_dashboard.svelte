@@ -2,9 +2,11 @@
     import { ModbusTable, function_code} from "$lib/modbus_table";
     import { ModbusDataType, data_type } from "$lib/modbus_data_type";
 	import RegisterMap from "./register_map.svelte";
+    import {submitted} from './store';
+
     export let ip: string;
     export let port: string;
-    
+
     let address: number = 0;
     let count: number = 1;
 
@@ -18,6 +20,10 @@
 
     $: func_code = function_code(selected_table);
     $: type = data_type(selected_data_type);
+
+    var unSubmit = () => {
+        submitted.set(false);
+    }
     
     function update_map() {
         address = addr;
@@ -28,7 +34,7 @@
   
 <div class="flex flex-col h-dvh">
     <div class="flex flex-row justify-between p-5 w-screen items-center z-10 bg-opacity-90">
-        <a href="/" class="text-xl ml-5 text-center text-gray-400 hover:text-white opacity-100">{ip}:{port}</a>
+        <button on:click={unSubmit} class="text-xl ml-5 text-center text-gray-400 hover:text-white opacity-100">{ip}:{port}</button>
     
         <div class="flex flex-row lg:flex-col">
             <div class="flex lg:flex-row flex-col">

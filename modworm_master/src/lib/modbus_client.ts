@@ -7,3 +7,17 @@ export async function ReadRegisters(ip:string, port:string, func_code:number, ad
     if (!response.ok) error(response.status, await response.json());
     return await response.json();
 }
+
+export async function CheckSocket(ip:string, port:string) {
+    const response = await fetch(`${BASE_URL}/nmap/${ip}/${port}`);
+    if (!response.ok) error(response.status, await response.json());
+    const servers = await response.json();
+
+    for (const server of servers) {
+        if (server.address === ip && server.port === port) return true;
+    }
+    return false;
+}
+
+
+
