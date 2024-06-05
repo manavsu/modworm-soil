@@ -1,0 +1,54 @@
+name: Build Tauri App
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Svelte App
+      run: npm run build
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        profile: minimal
+        override: true
+
+    - name: Install Tauri CLI
+      run: cargo install tauri-cli
+
+    - name: Build Tauri App
+      run: npm run tauri build
+
+    - name: Add README and LICENSE
+      run: |
+        Copy-Item README.md src-tauri/target/release/
+        Copy-Item LICENSE.txt src-tauri/target/release/
+
+    - name: Zip the artifacts
+      run: |
+        Compress-Archive -Path src-tauri/target/release/* -DestinationPath soil_windows.zip
+
+    - name: Upload Tauri app zip
+      uses: actions/upload-artifact@v4
+      with:
+        name: soil_windows
+        path: soil_windows.zip
