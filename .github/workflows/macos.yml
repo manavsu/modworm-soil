@@ -40,8 +40,8 @@ jobs:
 
       - name: Add README and LICENSE
         run: |
-          Copy-Item README.md src-tauri/target/release/
-          Copy-Item LICENSE.txt src-tauri/target/release/
+          cp README.md src-tauri/target/release/
+          cp LICENSE.txt src-tauri/target/release/
 
       - name: Zip the artifacts
         run: |
