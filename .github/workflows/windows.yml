@@ -1,4 +1,4 @@
-name: Build and Package Tauri App (Windows)
+name: windows
 
 on:
   workflow_dispatch:
