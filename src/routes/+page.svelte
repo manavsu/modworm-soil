@@ -1,11 +1,14 @@
 <script lang="ts">
+    import { Command } from '@tauri-apps/api/shell'
 	import '$lib/app.css';
     import SocketChecker from './socket_checker.svelte';
     import { submitted } from './store';
+    import { onMount } from 'svelte';
 
     
     let ip: string = "";
     let port: string = "";
+    let command;
 
     function handleSubmit() {
         ip = ip || "127.0.0.1";
@@ -13,6 +16,14 @@
         submitted.set(true);
         console.log(ip, port)
     }
+
+
+    Command.sidecar('binaries/sod').spawn().then(cmd => {
+        command = cmd;
+        console.log('starting sod...');
+    }).catch(error => {
+        console.error('failed to start sod...', error);
+    });
 </script>
 
 {#if !$submitted}
