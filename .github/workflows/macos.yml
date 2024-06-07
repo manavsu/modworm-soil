@@ -38,11 +38,6 @@ jobs:
       - name: Build Tauri App
         run: npm run tauri build
 
-      - name: Add README and LICENSE
-        run: |
-          cp README.md src-tauri/target/release/
-          cp LICENSE.txt src-tauri/target/release/
-
       - name: Zip the artifacts
         run: |
           zip -r soil_macos.zip src-tauri/target/release
@@ -50,5 +45,5 @@ jobs:
       - name: Upload Tauri app zip
         uses: actions/upload-artifact@v4
         with:
-          name: soil_macos
-          path: soil_macos.zip
+          name: soil_macos.dmg
+          path: src-tauri/target/release/bundle/dmg/soil_1.0.0_aarch64.dmg
