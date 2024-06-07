@@ -41,7 +41,7 @@ jobs:
       - name: Zip the artifacts
         run: |
           mv src-tauri/target/release/bundle soil
-          zip -r soil_macos.zip soil
+          zip -r soil_macos.zip soil/macos/soil.app
 
       - name: Upload Tauri app zip
         uses: actions/upload-artifact@v4
