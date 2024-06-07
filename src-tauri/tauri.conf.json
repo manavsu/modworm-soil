@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "soil",
-    "version": "0.1.0"
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -51,7 +51,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": ["../LICENSE.txt"],
       "shortDescription": "",
       "targets": "all",
       "windows": {
