@@ -1,4 +1,4 @@
-name: macOS
+name: macOS_exe
 
 on:
   workflow_dispatch:
@@ -37,13 +37,26 @@ jobs:
 
       - name: Build Tauri App
         run: npm run tauri build
-        
+
+      - name: Create Release Dir
+        run: |
+          mkdir soil
+          
+      - name: Add README and LICENSE
+        run: |
+          cp README.md soil/
+          cp LICENSE.txt soil/
+
+      - name: Add Exe
+        run: |
+          cp src-tauri/target/release/bundle/macos/soil.app/contents/macos/soil soil/
+          
       - name: Zip the artifacts
         run: |
-          zip -r soil_macos.zip src-tauri/target/release/bundle/macos/soil.app
+          zip -r soil_macos.zip soil
 
       - name: Upload Tauri app zip
         uses: actions/upload-artifact@v4
         with:
-          name: soil_macos
+          name: soil_macos.zip
           path: soil_macos.zip
