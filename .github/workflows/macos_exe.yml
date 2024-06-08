@@ -1,0 +1,62 @@
+name: macOS_exe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Svelte App
+        run: npm run build
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli
+
+      - name: Build Tauri App
+        run: npm run tauri build
+
+      - name: Create Release Dir
+        run: |
+          mkdir soil
+          
+      - name: Add README and LICENSE
+        run: |
+          cp README.md soil/
+          cp LICENSE.txt soil/
+
+      - name: Add Exe
+        run: |
+          cp src-tauri/target/release/bundle/macos/soil.app/contents/macos/soil soil/
+          
+      - name: Zip the artifacts
+        run: |
+          zip -r soil_macos.zip soil
+
+      - name: Upload Tauri app zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: soil_macos.zip
+          path: soil_macos.zip
