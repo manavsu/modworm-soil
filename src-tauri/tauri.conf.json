@@ -43,7 +43,7 @@
         "icons/icon.ico"
       ],
       "identifier": "soil",
-      "longDescription": "",
+      "longDescription": "A gui app for reading from modbus devices",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
