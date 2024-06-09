@@ -8,16 +8,4 @@ export async function ReadRegisters(ip:string, port:string, func_code:number, ad
     return await response.json();
 }
 
-export async function NetworkMap(cidr:string, port:string) {
-    const response = await fetch(`${BASE_URL}/nmap/${cidr}/${port}`);
-    if (!response.ok) error(response.status, await response.json());
-    const servers = await response.json();
-
-    for (const server of servers) {
-        if (server.address === cidr && server.port === port) return true;
-    }
-    return false;
-}
-
-
 

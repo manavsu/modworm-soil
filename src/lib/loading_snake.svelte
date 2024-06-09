@@ -10,8 +10,8 @@
 	export let radius: number = 3;
 
 	let snake_style: string = `w-3 h-3 absolute ${bg_color}`;
-	let margin: number = 20;
 	let delta: number = 20;
+	let diameter_pixels: number = radius * 20 * 3;
 
 	let snake: LoadingSnake;
 
@@ -25,7 +25,7 @@
 		in_loop: boolean = false;
         num_turns: number = 0;
 
-		constructor(size: number, margin: number, delta: number, radius: number) {
+		constructor(size: number, delta: number, radius: number) {
 			this.size = size;
 			this.radius = radius;
 			this.delay = size - 1;
@@ -34,8 +34,9 @@
 
 			for (let i = 0; i < size; i++)
 				this.blocks.push(
-					new BlockRepr(window.innerWidth / 2, window.innerHeight / 2, delta, margin)
+					new BlockRepr(diameter_pixels / 2 - 6, diameter_pixels / 2 - 6, delta, 0, diameter_pixels, diameter_pixels)
 				);
+				console.log(diameter_pixels / 2);
 		}
 
 		moveSnake() {
@@ -68,7 +69,7 @@
 
 	let isMounted = false;
 	onMount(() => {
-		snake = new LoadingSnake(snake_size, margin, delta, radius);
+		snake = new LoadingSnake(snake_size, delta, radius);
 		isMounted = true;
 		setInterval(() => {
 			snake.moveSnake();
@@ -78,7 +79,7 @@
 </script>
 
 {#if isMounted}
-<div class="h-dvh">
+<div style="height:{diameter_pixels}px; width:{diameter_pixels}px;" class="relative">
     {#each snake.blocks as block}
 		<div class={snake_style} style="top: {block.y}px; left: {block.x}px;"></div>
 	{/each}

@@ -16,16 +16,16 @@
   }
 
   :global(.input) {
-    @apply hover:scale-110 border-black bg-white focus:scale-110 focus:outline-none active:text-white transition duration-300 rounded-xl dark:bg-black dark:border-white;
+    @apply hover:scale-110 bg-white focus:scale-110 focus:outline-none active:text-white transition duration-300 rounded-xl dark:bg-black;
   }
 
   :global(.clickable) {
-    @apply hover:scale-110 active:scale-110 active:bg-black active:text-white transition duration-300 rounded-xl dark:border-white dark:bg-black dark:active:text-black dark:active:bg-white;
+    @apply hover:scale-110 active:scale-110 active:bg-black active:text-white transition duration-300 rounded-xl dark:bg-black dark:active:text-black dark:active:bg-white;
   }
 </style>
 
-<div class="flex flex-col h-dvh">
-  <div class="flex flex-row justify-center">
+<div class="flex flex-row h-dvh">
+  <div class="flex flex-col justify-center">
     <a class="px-4" href="/network">network</a>
     <a class="px-4" href="/tables">tables</a>
   </div>
