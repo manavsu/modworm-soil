@@ -80,8 +80,8 @@
 
 {#if isMounted}
 <div style="height:{diameter_pixels}px; width:{diameter_pixels}px;" class="relative">
-    {#each snake.blocks as block}
-		<div class={snake_style} style="top: {block.y}px; left: {block.x}px;"></div>
-	{/each}
+		{#each snake.blocks as block}
+			<div class={snake_style} style="top: {block.y}px; left: {block.x}px;"></div>
+		{/each}
 </div>
 {/if}

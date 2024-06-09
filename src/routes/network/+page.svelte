@@ -4,6 +4,8 @@
     import { BASE_URL } from "$lib/env";
     import { fade } from 'svelte/transition';
     import { Network, Socket } from "$lib/network";
+    import LoadingSnake from "$lib/loading_snake.svelte";
+    import { Working } from "$lib/store";
 
     let cidr = "";
     let ports = "";
@@ -11,6 +13,8 @@
     let scanning = false;
 
     let Networks: Network[] = [];
+
+    $: Working.set(scanning);
 
     async function NetworkMap(cidr:string, port:string) {
         const response = await fetch(`${BASE_URL}/nmap/${cidr}/${port}`);
@@ -32,7 +36,7 @@
 
         const parsed_cidr = cidr.replace("/", "+")
         const json_network = await NetworkMap(parsed_cidr, ports)
-        Networks.push(Network.fromJson(cidr, ports, json_network))
+        if (json_network) Networks.push(Network.fromJson(cidr, ports, json_network))
         scanning = false
     }
 
