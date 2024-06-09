@@ -39,7 +39,6 @@
         if (json_network) Networks.push(Network.fromJson(cidr, ports, json_network))
         scanning = false
     }
-
 </script>
 
 <div class="flex flex-col items-center">
