@@ -11,6 +11,7 @@
     let ports = "";
     let error: string | null;
     let scanning = false;
+    let adding = false;
 
     let Networks: Network[] = [];
 
@@ -36,28 +37,61 @@
 
         const parsed_cidr = cidr.replace("/", "+")
         const json_network = await NetworkMap(parsed_cidr, ports)
-        if (json_network) Networks.push(Network.fromJson(cidr, ports, json_network))
+        if (json_network) {
+            const matching_network = Networks.find(network => network.cidr === cidr && network.ports === ports);
+            if (matching_network) {
+                matching_network.open_sockets = new Network(cidr, ports, json_network).open_sockets;
+            } else {
+                Networks.push(new Network(cidr, ports, json_network));
+            }
+        }
+        Networks = [...Networks]
         scanning = false
+        console.log(Networks)
+    }
+
+    function HandleAdd() {
+        adding = true;
+    }
+
+    function HandleCancel() {
+        adding = false;
     }
 </script>
 
 <div class="flex flex-col items-center">
     <Title>Network</Title>
-    <form class="flex flex-col {scanning ? 'text-gray-500' : ''}" on:submit={HandleSubmit}>
-            <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
-                <input type="text" class="bg-transparent focus:outline-none pr-1" bind:value={cidr} placeholder="127.0.0.1" disabled={scanning}>
-                <p>CIDR</p>
-            </div>
-            <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
-                <input type="text" class="bg-transparent focus:outline-none pr-1" bind:value={ports} placeholder="502" disabled={scanning}>
-                <p>Ports</p>
-            </div>
-            <button class="border-2 px-2 py-1 clickable mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}" disabled={scanning}>
-                {#if !scanning} Scan {:else} Scanning... {/if}
-            </button>
-            {#if error}
-                    <h2 transition:fade={{duration: 200}} class="text-center text-fuchsia-500 dark:text-fuchsia-800">{error}</h2>
-            {/if}
-    </form>
+    {#each Networks as network}
+        <div class="flex flex-col p-2 mb-3">
+            <p>{network.cidr} : {network.ports}</p>
+            {#each network.open_sockets as socket}
+                <p>{socket.address} : {socket.port}</p>
+            {/each}
+        </div>
+    {/each}
+
+    {#if !adding}
+        <button in:fade={{delay: 200, duration:200}} out:fade={{duration:200}} on:click={HandleAdd} class="clickable border-2 px-1 m-3 text-xl">{"\uFF0B"}</button>
+    {:else}
+        <form in:fade={{delay: 200, duration:200}} out:fade={{duration:200}} class="flex flex-col text-sm {scanning ? 'text-gray-500' : ''}">
+                <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
+                    <input type="text" class="bg-transparent focus:outline-none pr-1" bind:value={cidr} placeholder="127.0.0.1" disabled={scanning}>
+                    <p>CIDR</p>
+                </div>
+                <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
+                    <input type="text" class="bg-transparent focus:outline-none pr-1" bind:value={ports} placeholder="502" disabled={scanning}>
+                    <p>Ports</p>
+                </div>
+                <button on:click={HandleSubmit} class="border-2 px-2 py-1 clickable mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}" disabled={scanning}>
+                    {#if !scanning} Scan {:else} Scanning... {/if}
+                </button>
+                <button on:click={HandleCancel} class="border-2 px-2 py-1 clickable mb-3 border-gray-500 text-gray-500" disabled={scanning}>
+                    Cancel
+                </button>
+                {#if error}
+                        <h2 transition:fade class="text-center text-fuchsia-500 dark:text-fuchsia-800">{error}</h2>
+                {/if}
+        </form>
+    {/if}
 </div>
 
