@@ -59,21 +59,13 @@
     }
 </script>
 
-<div class="flex flex-col items-center">
-    <Title>Network</Title>
-    {#each Networks as network}
-        <div class="flex flex-col p-2 mb-3">
-            <p>{network.cidr} : {network.ports}</p>
-            {#each network.open_sockets as socket}
-                <p>{socket.address} : {socket.port}</p>
-            {/each}
-        </div>
-    {/each}
+    <div class="mx-auto">
+        <Title>Network</Title>
+    </div>
 
-    {#if !adding}
-        <button in:fade={{delay: 200, duration:200}} out:fade={{duration:200}} on:click={HandleAdd} class="clickable border-2 px-1 m-3 text-xl">{"\uFF0B"}</button>
-    {:else}
-        <form in:fade={{delay: 200, duration:200}} out:fade={{duration:200}} class="flex flex-col text-sm {scanning ? 'text-gray-500' : ''}">
+    <div class="flex flex-row flex-grow border">
+        <div class="flex flex-col w-1/3 border justify-center">
+            <form in:fade={{delay: 200, duration:200}} out:fade={{duration:200}} class="flex flex-col text-sm w-fit mx-auto {scanning ? 'text-gray-500' : ''}">
                 <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
                     <input type="text" class="bg-transparent focus:outline-none pr-1" bind:value={cidr} placeholder="127.0.0.1" disabled={scanning}>
                     <p>CIDR</p>
@@ -85,13 +77,19 @@
                 <button on:click={HandleSubmit} class="border-2 px-2 py-1 clickable mb-3 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}" disabled={scanning}>
                     {#if !scanning} Scan {:else} Scanning... {/if}
                 </button>
-                <button on:click={HandleCancel} class="border-2 px-2 py-1 clickable mb-3 border-gray-500 text-gray-500" disabled={scanning}>
-                    Cancel
-                </button>
                 {#if error}
                         <h2 transition:fade class="text-center text-fuchsia-500 dark:text-fuchsia-800">{error}</h2>
                 {/if}
-        </form>
-    {/if}
-</div>
+            </form>
+        </div>
+
+        {#each Networks as network}
+            <div class="flex flex-col p-2 mb-3">
+                <p>{network.cidr} : {network.ports}</p>
+                {#each network.open_sockets as socket}
+                    <p>{socket.address} : {socket.port}</p>
+                {/each}
+            </div>
+        {/each}
+    </div>
 
