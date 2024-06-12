@@ -2,19 +2,13 @@
   import '$lib/app.css';
 	import { Working } from '$lib/store';
   import LoadingSnake from '$lib/loading_snake.svelte';
+  import { fade } from 'svelte/transition';
 </script>
 
 <style lang="postcss">
   :global(html) {
-    @apply bg-white text-black;
-    caret-color: black;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :global(html) {
-      @apply bg-black text-white;
-      caret-color: white;
-    }
+    @apply bg-black text-white;
+    caret-color: white;
   }
 
   :global(.input) {
@@ -22,7 +16,7 @@
   }
 
   :global(.clickable) {
-    @apply hover:scale-110 active:scale-110 active:bg-black active:text-white transition duration-300 rounded-xl dark:bg-black dark:active:text-black dark:active:bg-white;
+    @apply hover:scale-110 active:scale-110 transition duration-300 rounded-xl;
   }
 </style>
 
@@ -34,7 +28,9 @@
     </div>
     <div class="mx-auto min-h-16">
       {#if $Working}
-        <LoadingSnake radius={1}/>
+        <div transition:fade>
+          <LoadingSnake radius={1}/>
+        </div>
       {/if}
     </div>
   </div>

@@ -6,3 +6,5 @@ auto register map mapping
 read blocks
 ability to change the data type to view the data in
 better message tabs
+
+When sockets and network maps are store, ping every socket to see if its still online make it red if not

@@ -4,12 +4,12 @@
 	import { BlockRepr } from '$lib/block_repr';
 	import { Direction } from '$lib/direction';
 
-	export let bg_color: string = 'bg-gray-600';
+	export let color: string = 'bg-gray-600';
 	export let tick_rate: number = 100;
 	export let snake_size: number = 5;
 	export let radius: number = 3;
 
-	let snake_style: string = `w-3 h-3 absolute ${bg_color}`;
+	let snake_style: string = `w-3 h-3 absolute ${color}`;
 	let delta: number = 20;
 	let diameter_pixels: number = radius * 20 * 3;
 

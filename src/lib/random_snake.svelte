@@ -36,7 +36,7 @@
         moveSnake() {
             if (!this.initialized) {
                 this.initialized = true;
-                for (let i = 0; i < this.size; i++) this.blocks.push(new BlockRepr(window.innerWidth / 2, margin, delta, margin));
+                for (let i = 0; i < this.size; i++) this.blocks.push(new BlockRepr(window.innerWidth / 2, margin, delta, margin, window.innerWidth, window.innerHeight));
             }
             if (Math.random() < this.dir_change_prob) this.pickNewDirection();
             let last_dir = this.dir;
