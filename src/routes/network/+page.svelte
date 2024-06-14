@@ -64,6 +64,7 @@
 
     function OnConnect(socket: Socket) {
         ConnectedSocket.set(socket);
+        console.log($ConnectedSocket)
     }
 
     function OnScan(index: number) {
@@ -75,25 +76,29 @@
     <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2">
         <Title>Network</Title>
     </div>
-    <div class="transition-all duration-500 ease-in-out grid grid-cols-3 grid-flow-dense gap-0">
+    <div class="transition-all duration-500 ease-in-out grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-0">
 
         <div class="row-span-2 p-2">
-            <div class="flex flex-col border-2 border-gray-600 rounded-xl justify-center w-full py-6">
+            <div class="flex flex-col border-2 border-gray-600 rounded-xl justify-center w-full py-6 min-w-fit">
                 <form in:fade={{delay: 200, duration:200}} out:fade={{duration:200}} class="flex flex-row w-fit mx-auto items-center {scanning ? 'text-gray-500' : ''}">
+
                     <div class="flex flex-col">
-                        <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 mr-2 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
-                            <input type="text" class="bg-transparent focus:outline-none w-20 md:w-40 pr-1" bind:value={cidr} placeholder="127.0.0.1" disabled={scanning}>
+                        <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 mr-2 ml-3 {scanning ? 'border-gray-500' : 'border-white'}">
+                            <input type="text" class="bg-transparent focus:outline-none pr-1 w-full" bind:value={cidr} placeholder="127.0.0.1" disabled={scanning}>
                             <p>CIDR</p>
                         </div>
-                        <div class="flex flex-row border-2 rounded-md input px-2 py-1 mr-2 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
-                            <input type="text" class="bg-transparent focus:outline-none w-20 md:w-40 pr-1" bind:value={ports} placeholder="-" disabled={scanning}>
+                        <div class="flex flex-row border-2 rounded-md input px-2 py-1 mr-2 ml-3 {scanning ? 'border-gray-500' : 'border-white'}">
+                            <input type="text" class="bg-transparent focus:outline-none pr-1 w-full" bind:value={ports} placeholder="-" disabled={scanning}>
                             <p>Ports</p>
                         </div>
                     </div>
+
                     <p class="text-3xl transform duration-300">&#9675;</p>
-                    <button on:click={() => HandleSubmit(cidr, ports)} class="border-2 px-2 py-1 ml-3 clickable w-32 {scanning ? 'border-gray-500' : 'border-white'}" disabled={scanning}>Scan</button>
+
+                    <button on:click={() => HandleSubmit(cidr, ports)} class="border-2 px-2 py-1 m-3 clickable w-32 {scanning ? 'border-gray-500' : 'border-white'}" disabled={scanning}>Scan</button>
+
                     {#if error}
-                        <h2 transition:fade class="text-center text-fuchsia-500 dark:text-fuchsia-800">{error}</h2>
+                        <h2 transition:fade class="text-center text-fuchsia-800">{error}</h2>
                     {/if}
                 </form>
             </div>
@@ -102,7 +107,7 @@
         {#if Networks.length > 0}
             {#each Networks as network, index}
                 <div style="grid-row-end: span {GetHeight(network)}" class="flex flex-col justify-center p-2">
-                    <NetworkView network={network} remove={() => RemoveNetwork(index)} connect={() => OnConnect(index)} scan={() => OnScan(index)} scanning={scanning}/>
+                    <NetworkView network={network} remove={() => RemoveNetwork(index)} connect={(socket) => OnConnect(socket)} scan={() => OnScan(index)} scanning={scanning}/>
                 </div>
             {/each}
         {/if}

@@ -12,7 +12,7 @@
   }
 
   :global(.input) {
-    @apply hover:scale-110 bg-white focus:scale-110 focus:outline-none active:text-white transition duration-300 rounded-xl dark:bg-black;
+    @apply hover:scale-110 bg-white focus:scale-110 focus:outline-none active:text-white transition duration-300 rounded-xl bg-black;
   }
 
   :global(.clickable) {
