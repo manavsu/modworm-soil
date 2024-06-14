@@ -55,7 +55,7 @@
     function GetHeight(network: Network) {
         if (network.open_sockets.length == 0) return 1;
         if (network.open_sockets.length == 1 && network.cidr == network.open_sockets[0].address && network.ports == network.open_sockets[0].port) return 1;
-        return network.open_sockets.length;
+        return (network.open_sockets.length + 1 - Math.floor(network.open_sockets.length / 3));
     }
 </script>
 
@@ -89,7 +89,7 @@
 
         {#if Networks.length > 0}
             {#each Networks as network}
-                <div style="grid-row-end: span {GetHeight(network)}" class="p-2">
+                <div style="grid-row-end: span {GetHeight(network)}" class="flex flex-col justify-center p-2">
                     <NetworkView network={network} />
                 </div>
             {/each}

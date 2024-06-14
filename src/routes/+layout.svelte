@@ -34,7 +34,7 @@
       {/if}
     </div>
   </div>
-  <div class="flex-grow flex flex-col border overscroll-contain overflow-auto">
+  <div class="flex-grow flex flex-col overscroll-contain overflow-auto">
           <slot />
   </div>
 </div>
