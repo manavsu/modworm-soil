@@ -5,7 +5,7 @@
     import { fade } from 'svelte/transition';
     import { Network, Socket } from "$lib/network";
     import NetworkView from "./network_view.svelte";
-    import { Working } from "$lib/store";
+    import { Working, ConnectedSocket} from "$lib/store";
 
     let cidr = "";
     let ports = "";
@@ -33,7 +33,7 @@
         scanning = true
 
         cidr = cidr_t || "127.0.0.1"
-        ports = ports_t || "502"
+        ports = ports_t || "-"
 
         const parsed_cidr = cidr.replace("/", "+")
         const json_network = await NetworkMap(parsed_cidr, ports)
@@ -62,8 +62,8 @@
         Networks = Networks.filter((_, i) => i !== index);
     }
 
-    function OnConnect(index: number) {
-        HandleSubmit(Networks[index].cidr, Networks[index].ports)
+    function OnConnect(socket: Socket) {
+        ConnectedSocket.set(socket);
     }
 
     function OnScan(index: number) {
@@ -86,7 +86,7 @@
                             <p>CIDR</p>
                         </div>
                         <div class="flex flex-row border-2 rounded-md input px-2 py-1 mr-2 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}">
-                            <input type="text" class="bg-transparent focus:outline-none w-20 md:w-40 pr-1" bind:value={ports} placeholder="502" disabled={scanning}>
+                            <input type="text" class="bg-transparent focus:outline-none w-20 md:w-40 pr-1" bind:value={ports} placeholder="-" disabled={scanning}>
                             <p>Ports</p>
                         </div>
                     </div>
