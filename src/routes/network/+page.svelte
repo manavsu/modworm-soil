@@ -57,13 +57,25 @@
         if (network.open_sockets.length == 1 && network.cidr == network.open_sockets[0].address && network.ports == network.open_sockets[0].port) return 1;
         return (network.open_sockets.length + 1 - Math.floor(network.open_sockets.length / 3));
     }
+
+    function RemoveNetwork(index: number) {
+        Networks = Networks.filter((_, i) => i !== index);
+    }
+
+    function OnConnect(index: number) {
+        HandleSubmit(Networks[index].cidr, Networks[index].ports)
+    }
+
+    function OnScan(index: number) {
+        HandleSubmit(Networks[index].cidr, Networks[index].ports)
+    }
 </script>
 
 <div class="flex flex-col">
     <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2">
         <Title>Network</Title>
     </div>
-    <div class="grid grid-cols-3 grid-flow-dense gap-0">
+    <div class="transition-all duration-500 ease-in-out grid grid-cols-3 grid-flow-dense gap-0">
 
         <div class="row-span-2 p-2">
             <div class="flex flex-col border-2 border-gray-600 rounded-xl justify-center w-full py-6">
@@ -79,7 +91,7 @@
                         </div>
                     </div>
                     <p class="text-3xl transform duration-300">&#9675;</p>
-                    <button on:click={() => HandleSubmit(cidr, ports)} class="border-2 px-2 py-1 ml-3 clickable w-32 {scanning ? 'border-gray-500' : 'border-black dark:border-white'}" disabled={scanning}>Scan</button>
+                    <button on:click={() => HandleSubmit(cidr, ports)} class="border-2 px-2 py-1 ml-3 clickable w-32 {scanning ? 'border-gray-500' : 'border-white'}" disabled={scanning}>Scan</button>
                     {#if error}
                         <h2 transition:fade class="text-center text-fuchsia-500 dark:text-fuchsia-800">{error}</h2>
                     {/if}
@@ -88,9 +100,9 @@
         </div>
 
         {#if Networks.length > 0}
-            {#each Networks as network}
+            {#each Networks as network, index}
                 <div style="grid-row-end: span {GetHeight(network)}" class="flex flex-col justify-center p-2">
-                    <NetworkView network={network} />
+                    <NetworkView network={network} remove={() => RemoveNetwork(index)} connect={() => OnConnect(index)} scan={() => OnScan(index)} scanning={scanning}/>
                 </div>
             {/each}
         {/if}
