@@ -4,7 +4,7 @@
 	import { BlockRepr } from '$lib/block_repr';
 	import { Direction } from '$lib/direction';
 
-	export let color: string = 'bg-gray-600';
+	export let color: string = 'bg-white';
 	export let tick_rate: number = 100;
 	export let snake_size: number = 5;
 	export let radius: number = 3;

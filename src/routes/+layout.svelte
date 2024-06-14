@@ -3,6 +3,12 @@
 	import { Working } from '$lib/store';
   import LoadingSnake from '$lib/loading_snake.svelte';
   import { fade } from 'svelte/transition';
+  import NetworkIcon from '$lib/icons/network_icon.svelte';
+  import TablesIcon from '$lib/icons/tables_icon.svelte';
+  import { page } from '$app/stores'; 
+
+  let path;
+  $: path = $page.url.pathname
 </script>
 
 <style lang="postcss">
@@ -22,18 +28,19 @@
 
 <div class="flex flex-row h-dvh">
   <div class="flex flex-col">
-    <div class="flex flex-col justify-center grow">
-      <a class="px-4" href="/network">network</a>
-      <a class="px-4" href="/tables">tables</a>
+    <div class="flex flex-col grow mt-5">
+      <a class="p-4 hover:scale-110 transitino duration-300 {path == "/network" ? "stroke-white" : "stroke-gray-500"}" href="/network"><NetworkIcon/></a>
+      <a class="p-4 hover:scale-110 transition duration-300 {path == "/tables" ? "stroke-white" : "stroke-gray-500"}" href="/tables"><TablesIcon/></a>
     </div>
     <div class="mx-auto min-h-16">
       {#if $Working}
-        <div transition:fade>
+        <div transition:fade={{duration:300}}>
           <LoadingSnake radius={1}/>
         </div>
       {/if}
     </div>
   </div>
+  <div class="border border-gray-500"/>
   <div class="flex-grow flex flex-col overscroll-contain overflow-auto">
           <slot />
   </div>

@@ -73,7 +73,7 @@
 </script>
 
 <div class="flex flex-col">
-    <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2">
+    <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2 p-2">
         <Title>Network</Title>
     </div>
     <div class="transition-all duration-500 ease-in-out grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-0">
