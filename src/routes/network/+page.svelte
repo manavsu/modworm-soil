@@ -28,6 +28,15 @@
         return await response.json();
     }
 
+    async function RemoveNetworkRequest(cidr: string, ports: string) {
+        const response = await fetch(`${BASE_URL}/remove/network/${cidr}/${ports}/`);
+        if (!response.ok) {
+            error = await response.json().then(r => r.error);
+            return;
+        }
+        error = null;
+    }
+
     async function GetSavedNetworks() {
         let json_networks = null;
         try {
@@ -95,7 +104,9 @@
         return (network.open_sockets.length + 1 - Math.floor(network.open_sockets.length / 3));
     }
 
-    function RemoveNetwork(index: number) {
+    async function RemoveNetwork(index: number) {
+        let parsed_cidr = Networks[index].cidr.replace("/", "+")
+        await RemoveNetworkRequest(parsed_cidr, Networks[index].ports);
         Networks = Networks.filter((_, i) => i !== index);
     }
 
