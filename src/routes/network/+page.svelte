@@ -45,8 +45,9 @@
                 Networks.push(new Network(cidr, ports, json_network));
             }
         }
-        Networks = [...Networks]
+
         await new Promise(r => setTimeout(r, 500))
+        Networks = [...Networks]
         scanning = false
         console.log(Networks)
         console.log(selected_network)
@@ -72,16 +73,23 @@
     }
 </script>
 
-<div class="flex flex-col">
+<div in:fade={{delay: 200, duration:200}} class="flex flex-col">
     <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2 p-2">
-        <Title>Network</Title>
+            {#if !error}
+                <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
+                    <Title>Networks</Title>
+                </div>
+            {:else}
+                <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
+                    <h2 class="text-center text-xl text-rose-900">{error}</h2>
+                </div>
+            {/if}
     </div>
     <div class="transition-all duration-500 ease-in-out grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-dense gap-0">
 
         <div class="row-span-2 p-2">
-            <div class="flex flex-col border-2 border-gray-600 rounded-xl justify-center w-full py-6 min-w-fit">
-                <form in:fade={{delay: 200, duration:200}} out:fade={{duration:200}} class="flex flex-row w-fit mx-auto items-center {scanning ? 'text-gray-500' : ''}">
-
+            <div in:fade={{delay: 200, duration:200}} class="flex flex-col border-2 border-gray-600 rounded-xl justify-center w-full py-6 min-w-fit">
+                <form class="flex flex-row w-fit mx-auto items-center {scanning ? 'text-gray-500' : ''}">
                     <div class="flex flex-col">
                         <div class="flex flex-row border-2 rounded-md input px-2 py-1 mb-3 mr-2 ml-3 {scanning ? 'border-gray-500' : 'border-white'}">
                             <input type="text" class="bg-transparent focus:outline-none pr-1 w-full" bind:value={cidr} placeholder="127.0.0.1" disabled={scanning}>
@@ -96,17 +104,13 @@
                     <p class="text-3xl transform duration-300">&#9675;</p>
 
                     <button on:click={() => HandleSubmit(cidr, ports)} class="border-2 px-2 py-1 m-3 clickable w-32 {scanning ? 'border-gray-500' : 'border-white'}" disabled={scanning}>Scan</button>
-
-                    {#if error}
-                        <h2 transition:fade class="text-center text-fuchsia-800">{error}</h2>
-                    {/if}
                 </form>
             </div>
         </div>
 
         {#if Networks.length > 0}
             {#each Networks as network, index}
-                <div style="grid-row-end: span {GetHeight(network)}" class="flex flex-col justify-center p-2">
+                <div in:fade={{delay: 200, duration:200}} style="grid-row-end: span {GetHeight(network)}" class="flex flex-col justify-center p-2">
                     <NetworkView network={network} remove={() => RemoveNetwork(index)} connect={(socket) => OnConnect(socket)} scan={() => OnScan(index)} scanning={scanning}/>
                 </div>
             {/each}

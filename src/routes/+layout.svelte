@@ -41,7 +41,7 @@
     </div>
   </div>
   <div class="border border-gray-500"/>
-  <div class="flex-grow flex flex-col overscroll-contain overflow-auto">
+  <div class="flex-grow flex flex-col overscroll-contain overflow-auto m-4">
           <slot />
   </div>
 </div>
