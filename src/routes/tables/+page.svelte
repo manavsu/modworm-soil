@@ -14,9 +14,46 @@
             <a href="/network" class="border-2 px-10 py-2 mt-8 clickable border-white text-center">Networks</a>
         </div> 
     {:else}
-        <div class="flex-grow">
-            <div class="grid grid-cols-32">
-                
+        <div class="flex flex-row mx-auto p-2">
+            <div class="flex-grow flex flex-col">
+                {#each Array(64) as _}
+                    <div class="flex flex-row">
+                        {#each Array(32) as _}
+                            <div class="h-2 w-2 bg-white m-0.5 hover:scale-150">
+                            </div>
+                        {/each}
+                    </div>
+                {/each}
+            </div>
+            <div class="flex-grow flex flex-col">
+                {#each Array(64) as _}
+                    <div class="flex flex-row">
+                        {#each Array(32) as _}
+                            <div class="h-2 w-2 bg-white m-0.5">
+                            </div>
+                        {/each}
+                    </div>
+                {/each}
+            </div>
+            <div class="flex-grow flex flex-col">
+                {#each Array(64) as _}
+                    <div class="flex flex-row">
+                        {#each Array(32) as _}
+                            <div class="h-2 w-2 bg-white m-0.5">
+                            </div>
+                        {/each}
+                    </div>
+                {/each}
+            </div>
+            <div class="flex-grow flex flex-col">
+                {#each Array(64) as _}
+                    <div class="flex flex-row">
+                        {#each Array(32) as _}
+                            <div class="h-2 w-2 bg-white m-0.5">
+                            </div>
+                        {/each}
+                    </div>
+                {/each}
             </div>
         </div>
     {/if}

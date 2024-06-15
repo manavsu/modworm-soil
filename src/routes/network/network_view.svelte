@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Network } from "$lib/network";
     import { Socket } from "$lib/network";
+    import { ConnectedSocket } from "$lib/store";
 
     export let network: Network;
     export let remove: () => void;
@@ -11,9 +12,9 @@
 
 {#if network.open_sockets.length == 1 && network.cidr == network.open_sockets[0].address && network.ports == network.open_sockets[0].port}
     <div class="flex flex-row p-2 justify-between rounded-xl mx-auto items-center border-2 w-full border-gray-600 h-14">
-        <p class="text-xl">{network.cidr} : {network.ports}</p>
+        <p class="text-xl {$ConnectedSocket?.address == network.cidr && $ConnectedSocket?.port == network.ports ? "text-green-800" : ""}">{network.cidr} : {network.ports}</p>
         <div class="flex flex-row">
-            <button on:click={() => connect(network.open_sockets[0])} class="py-1 px-5 hover:scale-110 transition duration-300 rounded-xl border-2 place-items-center">Connect</button>
+            <button on:click={() => connect(network.open_sockets[0])} class="py-1 px-5 hover:scale-110 transition duration-300 rounded-xl border-2 place-items-center {$ConnectedSocket?.address == network.cidr && $ConnectedSocket?.port == network.ports ? "border-green-800 text-green-800" : ""}">Connect</button>
             <button on:click={remove} class="py-1 px-3 ml-2 hover:scale-110 transition duration-300 rounded-xl border-2 place-items-center">×</button>
         </div>
     </div>
@@ -29,8 +30,8 @@
         {#each network.open_sockets as socket}
             <hr class="w-full text-white mx-auto"/>
             <div class="flex flex-row w-full justify-between py-2 items-center">
-                <p>{socket.address} : {socket.port}</p>
-                <button on:click={() => connect(socket)} class="px-5 py-1 hover:scale-110 transition duration-300 rounded-xl border-2 place-items-center">Connect</button>
+                <p class="{$ConnectedSocket?.address == socket.address && $ConnectedSocket?.port == socket.port ? "text-green-800" : ""}">{socket.address} : {socket.port}</p>
+                <button on:click={() => connect(socket)} class="px-5 py-1 hover:scale-110 transition duration-300 rounded-xl border-2 place-items-center {$ConnectedSocket?.address == socket.address && $ConnectedSocket?.port == socket.port ? "border-green-800 text-green-800" : ""}">Connect</button>
             </div>
         {/each}
     </div>
