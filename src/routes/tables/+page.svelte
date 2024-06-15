@@ -14,8 +14,10 @@
             <a href="/network" class="border-2 px-10 py-2 mt-8 clickable border-white text-center">Networks</a>
         </div> 
     {:else}
-        <div>
-
+        <div class="flex-grow">
+            <div class="grid grid-cols-32">
+                
+            </div>
         </div>
-    {/if} 
+    {/if}
 </div>

@@ -5,6 +5,7 @@
     import { fade } from 'svelte/transition';
     import { Network, Socket } from "$lib/network";
     import NetworkView from "./network_view.svelte";
+    import { onMount } from "svelte";
     import { Working, ConnectedSocket} from "$lib/store";
 
     let cidr = "";
@@ -17,6 +18,33 @@
 
     $: Working.set(scanning);
 
+    async function GetNetworks() {
+        const response = await fetch(`${BASE_URL}/get/networks/`);
+        if (!response.ok) {
+            error = await response.json().then(r => r.error);
+            return;
+        }
+        error = null;
+        return await response.json();
+    }
+
+    async function GetSavedNetworks() {
+        let json_networks = null;
+        try {
+            json_networks = await GetNetworks();
+        } catch (e) {
+            if (e instanceof Error) {
+                error = e.message;
+            } else {
+                error = "An unknown error occurred.";
+            }
+        }
+        if (json_networks) {
+            Networks = json_networks.map((network: any) => new Network(network.cidr, network.ports, network.open_sockets));
+            console.log(Networks)
+        }
+    }
+
     async function NetworkMap(cidr:string, port:string) {
         const response = await fetch(`${BASE_URL}/nmap/${cidr}/${port}`);
         if (!response.ok) {
@@ -24,8 +52,7 @@
             return;
         }
         error = null;
-        const servers = await response.json();
-        return servers;
+        return await response.json();
     }
 
     async function HandleSubmit(cidr_t:string, ports_t:string) {
@@ -36,7 +63,16 @@
         ports = ports_t || "-"
 
         const parsed_cidr = cidr.replace("/", "+")
-        const json_network = await NetworkMap(parsed_cidr, ports)
+        let json_network = null;
+        try {
+            json_network = await NetworkMap(parsed_cidr, ports)
+        } catch (e) {
+            if (e instanceof Error) {
+                error = e.message;
+            } else {
+                error = "An unknown error occurred.";
+            }
+        }
         if (json_network) {
             const matching_network = Networks.find(network => network.cidr === cidr && network.ports === ports);
             if (matching_network) {
@@ -71,6 +107,10 @@
     function OnScan(index: number) {
         HandleSubmit(Networks[index].cidr, Networks[index].ports)
     }
+
+    onMount(() => {
+        GetSavedNetworks();
+    });
 </script>
 
 <div in:fade={{delay: 200, duration:200}} class="flex flex-col">
@@ -78,9 +118,9 @@
             {#if !error}
                 <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
                     <Title>Networks</Title>
-                </div>
-            {:else}
-                <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
+                    </div>
+                {:else}
+            <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
                     <h2 class="text-center text-xl text-rose-900">{error}</h2>
                 </div>
             {/if}
