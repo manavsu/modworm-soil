@@ -36,7 +36,6 @@
 				this.blocks.push(
 					new BlockRepr(diameter_pixels / 2 - 6, diameter_pixels / 2 - 6, delta, 0, diameter_pixels, diameter_pixels)
 				);
-				console.log(diameter_pixels / 2);
 		}
 
 		moveSnake() {

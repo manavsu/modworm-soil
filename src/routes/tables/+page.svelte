@@ -2,6 +2,14 @@
     import Title from '$lib/title.svelte';
     import { ConnectedSocket } from '$lib/store';
     import { fade } from 'svelte/transition';
+
+    async function GetDeviceInfo() {
+        
+    }
+
+    async function MapModbusClient() {
+        
+    }
 </script>
 
 <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full">

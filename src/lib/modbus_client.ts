@@ -7,5 +7,3 @@ export async function ReadRegisters(ip:string, port:string, func_code:number, ad
     if (!response.ok) error(response.status, await response.json());
     return await response.json();
 }
-
-

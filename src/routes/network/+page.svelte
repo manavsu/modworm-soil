@@ -37,6 +37,21 @@
         error = null;
     }
 
+
+    export async function CheckSocket(ip:string, port:string) {
+        const response = await fetch(`${BASE_URL}/nmap/${ip}/${port}`);
+        if (!response.ok) {
+            return false;
+        }
+        const servers = await response.json();
+
+        for (const server of servers) {
+            if (server.address === ip && server.port === port) return true;
+        }
+        return false;
+    }
+
+
     async function GetSavedNetworks() {
         let json_networks = null;
         try {
@@ -50,7 +65,6 @@
         }
         if (json_networks) {
             Networks = json_networks.map((network: any) => new Network(network.cidr, network.ports, network.open_sockets));
-            console.log(Networks)
         }
     }
 
@@ -94,8 +108,6 @@
         await new Promise(r => setTimeout(r, 500))
         Networks = [...Networks]
         scanning = false
-        console.log(Networks)
-        console.log(selected_network)
     }
 
     function GetHeight(network: Network) {
@@ -110,9 +122,13 @@
         Networks = Networks.filter((_, i) => i !== index);
     }
 
-    function OnConnect(socket: Socket) {
+    async function OnConnect(socket: Socket) {
+        if (!await CheckSocket(socket.address, socket.port)) {
+            error = "Unable to connect to socket";
+            ConnectedSocket.set(null);
+            return;
+        }
         ConnectedSocket.set(socket);
-        console.log($ConnectedSocket)
     }
 
     function OnScan(index: number) {
