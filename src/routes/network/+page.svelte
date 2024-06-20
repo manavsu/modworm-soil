@@ -39,7 +39,7 @@
 
 
     export async function CheckSocket(ip:string, port:string) {
-        const response = await fetch(`${BASE_URL}/nmap/${ip}/${port}`);
+        const response = await fetch(`${BASE_URL}/checksocket/${ip}/${port}`);
         if (!response.ok) {
             return false;
         }
