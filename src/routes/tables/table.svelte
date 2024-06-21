@@ -1,20 +1,16 @@
 <script lang="ts">
-    import Title from "$lib/title.svelte";
-    import { BASE_URL } from "$lib/env";
     import { fade } from 'svelte/transition';
-    import { Network, Socket } from "$lib/network";
-    import { onMount } from "svelte";
-    import { Working, ConnectedSocket} from "$lib/store";
 	import LoadingSnake from "$lib/loading_snake.svelte";
-	import { Container } from "postcss";
+	import Title from '$lib/title.svelte';
 
     export let table: []|null;
+    export let title: string;
+
     function contains(i:number, j:number) {
         const start_index = ((i * 32) * 32) + (j * 32)
         const end_index = start_index + 31;
         if (table == null) return false;
         for (let cnt = 0; cnt < table?.length; cnt++) {
-            console.log(table[cnt][0], table[cnt][1], start_index, end_index);
             if (start_index <= table[cnt][0] && table[cnt][0] <= end_index) {
                 return true;
             }
@@ -32,16 +28,21 @@
     }
 </script>
 
-{#if table == null}
-    <LoadingSnake />
-{:else}
-    <div in:fade class="flex-grow flex flex-col">
-        {#each Array(64) as _, i}
-            <div class="flex flex-row">
-                {#each Array(32) as _, j}
-                    <div class="h-2 w-2 {contains(i, j) ? "bg-white" : "bg-gray-500"} bg-white m-0.5 hover:scale-150"></div>
+    <div class="flex flex-col border h-full">
+        <p class="text-2xl mx-auto p-5">{title}</p>
+        {#if table == null}
+            <div class="flex flex-col flex-grow border justify-center">
+                <LoadingSnake />
+            </div>
+        {:else}
+            <div in:fade class="flex flex-col items-center">
+                {#each Array(64) as _, i}
+                    <div class="flex flex-row w-fit">
+                        {#each Array(32) as _, j}
+                            <div class="h-2 w-2 {contains(i, j) ? "bg-white" : "bg-gray-500"} bg-white m-0.5 hover:scale-150"></div>
+                        {/each}
+                    </div>
                 {/each}
             </div>
-        {/each}
+        {/if}
     </div>
-{/if}

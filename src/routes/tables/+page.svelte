@@ -49,10 +49,10 @@
         </div> 
     {:else}
         <div class="flex flex-row flex-wrap mx-auto p-2 w-full justify-around h-full">
-            <div class="w-1/4 mx-auto border"><Table table={coil_table}/></div>
-            <div class="w-1/4 mx-auto border"><Table table={discrete_input_table}/></div>
-            <div class="w-1/4 mx-auto border"><Table table={holding_registers_table}/></div>
-            <div class="w-1/4 mx-auto border"><Table table={input_registers_table}/></div>
+            <div class="flex flex-row justify-center items-center w-1/4"><Table table={coil_table} title="Coils"/></div>
+            <div class="flex flex-row justify-center items-center w-1/4"><Table table={discrete_input_table} title="Discrete Inputs"/></div>
+            <div class="flex flex-row justify-center items-center w-1/4"><Table table={holding_registers_table} title="Holding Registers"/></div>
+            <div class="flex flex-row justify-center items-center w-1/4"><Table table={input_registers_table} title="Input Registers"/></div>
         </div>
     {/if}
 </div>
