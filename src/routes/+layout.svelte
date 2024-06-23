@@ -5,6 +5,7 @@
   import { fade } from 'svelte/transition';
   import NetworkIcon from '$lib/icons/network_icon.svelte';
   import TablesIcon from '$lib/icons/tables_icon.svelte';
+  import RegistersIcon from '$lib/icons/registers_icon.svelte';
   import { page } from '$app/stores'; 
 
   let path;
@@ -31,6 +32,7 @@
     <div class="flex flex-col grow mt-5">
       <a class="p-4 hover:scale-110 transitino duration-300 {path == "/network" ? "stroke-white" : "stroke-gray-500"}" href="/network"><NetworkIcon/></a>
       <a class="p-4 hover:scale-110 transition duration-300 {path == "/tables" ? "stroke-white" : "stroke-gray-500"}" href="/tables"><TablesIcon/></a>
+      <a class="p-4 hover:scale-110 transition duration-300 {path == "/registers" ? "stroke-white" : "stroke-gray-500"}" href="/registers"><RegistersIcon/></a>
     </div>
     <div class="mx-auto min-h-16">
       {#if $Working}

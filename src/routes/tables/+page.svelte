@@ -1,6 +1,6 @@
 <script lang="ts">
     import Title from '$lib/title.svelte';
-    import { ConnectedSocket, Working } from '$lib/store';
+    import { ConnectedSocket, Working, CurrentTable} from '$lib/store';
     import { fade } from 'svelte/transition';
     import { BASE_URL } from '$lib/env'; 
     import LoadingSnake from '$lib/loading_snake.svelte';
@@ -10,49 +10,103 @@
     let discrete_input_table: []|null;
     let holding_registers_table: []|null;
     let input_registers_table: []|null;
-    
-    async function GetDeviceInfo() {
-        
-    }
 
-    async function ScanTable(ip:string, port:string, table:number) {
+    let device_info: any | null;
+
+    let error: string | null = null;
+    
+    async function GetDeviceInfo(address:string, port:string, hard:boolean=false) {
         if ($ConnectedSocket == null) return;
         $Working = true;
-        const response = await fetch(`${BASE_URL}/mmap/table/${ip}/${port}/${table}/`);
+        const response = await fetch(`${BASE_URL}/deviceinfo/${address}/${port}/`);
         if (!response.ok) {
             $Working = false;
-            return await response.json();
+            throw new Error(await response.text());
+        }
+        device_info = await response.json();
+        $Working = false;
+    }
+
+    async function ScanTable(ip:string, port:string, table:number, hard:boolean = false) {
+        if ($ConnectedSocket == null) return;
+        $Working = true;
+        const response = await fetch(`${BASE_URL}/mmap/table/${ip}/${port}/${table}/${hard ? 1 : 0}/`);
+        if (!response.ok) {
+            $Working = false;
+            throw new Error(await response.text());
         }
         const table_list = await response.json();
         $Working = false;
         return table_list;
     }
 
-    async function ScanAllTables(address:string, port:string) {
-        holding_registers_table = (await ScanTable(address, port, 3)).holding_registers;
-        coil_table = (await ScanTable(address, port, 1)).coils;
-        discrete_input_table = (await ScanTable(address, port, 2)).discrete_inputs;
-        input_registers_table = (await ScanTable(address, port, 4)).input_registers;
+    async function ScanAllTables(address:string, port:string, hard:boolean = false) {
+        try {
+            coil_table = (await ScanTable(address, port, 1, hard));
+            discrete_input_table = (await ScanTable(address, port, 2, hard));
+            holding_registers_table = (await ScanTable(address, port, 3, hard));
+            input_registers_table = (await ScanTable(address, port, 4, hard));
+            await GetDeviceInfo(address, port, hard);
+        } catch (e) {
+            error = e.message;
+        }
+
     }
 
-    $: if ($ConnectedSocket != null) (async () => await ScanAllTables($ConnectedSocket.address, $ConnectedSocket.port))();
+    async function Refresh() {
+        coil_table = null;
+        discrete_input_table = null;
+        holding_registers_table = null;
+        input_registers_table = null;
+        device_info = null;
+        if ($ConnectedSocket == null) return;
+        await ScanAllTables($ConnectedSocket.address, $ConnectedSocket.port, true);
+    }
+
+    $: if ($ConnectedSocket != null) (async () => await ScanAllTables($ConnectedSocket.address, $ConnectedSocket.port, false))();
 </script>
 
 <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full">
     <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2 p-2">
-        <Title>Tables</Title>
+        {#if !error}
+            <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
+                <Title>Tables</Title>
+            </div>
+        {:else}
+            <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
+                <h2 class="text-center text-xl text-rose-900">{error}</h2>
+            </div>
+        {/if}
     </div>
     {#if $ConnectedSocket == null}
         <div class="flex flex-col justify-center items-center flex-grow text-2xl">
-            <p>No connected socket, scan and connect from the networks page.</p>
+            <p class="text-center">No connected socket, scan and connect from the networks page.</p>
             <a href="/network" class="border-2 px-10 py-2 mt-8 clickable border-white text-center">Networks</a>
         </div> 
     {:else}
-        <div class="flex flex-row flex-wrap mx-auto p-2 w-full justify-around h-full">
-            <div class="flex flex-row justify-center items-center w-1/4"><Table table={coil_table} title="Coils"/></div>
-            <div class="flex flex-row justify-center items-center w-1/4"><Table table={discrete_input_table} title="Discrete Inputs"/></div>
-            <div class="flex flex-row justify-center items-center w-1/4"><Table table={holding_registers_table} title="Holding Registers"/></div>
-            <div class="flex flex-row justify-center items-center w-1/4"><Table table={input_registers_table} title="Input Registers"/></div>
+        <div class="border-2 border-gray-600 rounded-xl m-2 p-4">
+            {#if device_info == null}
+                <div class="flex flex-row justify-center item-center w-full">
+                    <LoadingSnake radius={1}/>
+                </div>
+            {:else}
+                <div in:fade class="flex flex-col md:flex-row justify-between items-center w-full">
+                    <div class="grid lg:grid-flow-col grid-rows-3">
+                        {#each Object.entries(device_info) as [key, value]}
+                            <p class="px-5"><strong>{key}</strong>: {value}</p>
+                        {/each}
+                    </div>
+                    <div class="flex flex-row mt-6 md:mt-0 items-center">
+                        <button on:click={Refresh} class="border-2 p-2 m-2 transition transition-duratin-300 hover:scale-110 rounded-xl border-white text-center">Refresh</button>
+                    </div>
+                </div>
+            {/if}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 p-2 mx-auto">
+            <a href="/registers" on:click={() => $CurrentTable = coil_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={coil_table} title="Coils"/></a>
+            <a href="/registers" on:click={() => $CurrentTable = discrete_input_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={discrete_input_table} title="Discrete Inputs"/></a>
+            <a href="/registers" on:click={() => $CurrentTable = holding_registers_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={holding_registers_table} title="Holding Registers"/></a>
+            <a href="/registers" on:click={() => $CurrentTable = input_registers_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={input_registers_table} title="Input Registers"/></a>
         </div>
     {/if}
 </div>

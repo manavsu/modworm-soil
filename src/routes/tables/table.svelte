@@ -14,13 +14,13 @@
             if (start_index <= table[cnt][0] && table[cnt][0] <= end_index) {
                 return true;
             }
-            if (start_index <= table[cnt][1] && table[cnt][1] <= end_index) {
+            if (start_index <= table[cnt][0] + table[cnt][1] && table[cnt][0] + table[cnt][1] <= end_index) {
                 return true;
             }
-            if (table[cnt][0] <= start_index && start_index <= table[cnt][1]) {
+            if (table[cnt][0] <= start_index && start_index <= table[cnt][0] + table[cnt][1]) {
                 return true;
             }
-            if (table[cnt][0] <= end_index && end_index <= table[cnt][1]) {
+            if (table[cnt][0] <= end_index && end_index <= table[cnt][0] + table[cnt][1]) {
                 return true;
             }
         }
@@ -28,21 +28,21 @@
     }
 </script>
 
-    <div class="flex flex-col border h-full">
-        <p class="text-2xl mx-auto p-5">{title}</p>
-        {#if table == null}
-            <div class="flex flex-col flex-grow border justify-center">
-                <LoadingSnake />
-            </div>
-        {:else}
-            <div in:fade class="flex flex-col items-center">
-                {#each Array(64) as _, i}
-                    <div class="flex flex-row w-fit">
-                        {#each Array(32) as _, j}
-                            <div class="h-2 w-2 {contains(i, j) ? "bg-white" : "bg-gray-500"} bg-white m-0.5 hover:scale-150"></div>
-                        {/each}
-                    </div>
-                {/each}
-            </div>
-        {/if}
-    </div>
+<div class="flex flex-col h-full">
+    <p class="text-2xl mx-auto p-3">{title}</p>
+    {#if table == null}
+        <div class="flex flex-col flex-grow justify-center">
+            <LoadingSnake />
+        </div>
+    {:else}
+        <div in:fade class="flex flex-col items-center">
+            {#each Array(64) as _, i}
+                <div class="flex flex-row w-fit">
+                    {#each Array(32) as _, j}
+                        <div class="h-1 w-1 {contains(i, j) ? "bg-white" : "bg-gray-600"} m-0.5"></div>
+                    {/each}
+                </div>
+            {/each}
+        </div>
+    {/if}
+</div>
