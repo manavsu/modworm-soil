@@ -1,8 +1,13 @@
 export enum ModbusTable {
-    Coils = "coils",
-    DiscreteInputs = "discrete inputs",
-    HoldingRegisters = "holding registers",
-    InputRegisters = "input registers",
+    Coils = "Coils",
+    DiscreteInputs = "Discrete Inputs",
+    HoldingRegisters = "Holding Registers",
+    InputRegisters = "Input Registers",
+}
+
+export interface TableStore {
+    register_list: number[][];
+    type: ModbusTable;
 }
 
 export function function_code(table: ModbusTable) {

@@ -7,8 +7,11 @@
     export let type: ModbusDataType;
 </script>
 
-<div class="relative text-l text-right p-2 my-2 mx-1 w-24 h-fit bg-gray-800 rounded-tr-md rounded-bl-md">
-    <div class="absolute -top-3 left-1 text-gray-400 text-s">{address}</div>
-    <div class="absolute -bottom-2 right-1 text-gray-400 text-xs">{type}</div>
-    {value}
+<div class="flex flex-row text-l p-2 m-1 w-32 border-2 border-gray-600 rounded-xl items-center">
+    <div class="flex flex-col text-right min-w-8">
+        <div class="text-xs">{address}</div>
+        <div class="text-xs">{type}</div>
+    </div>
+    <div class="border border-gray-600 ml-2 mr-2 min-h-8"></div>
+    <div class="min-w-10 text-left">{value}</div>
 </div>

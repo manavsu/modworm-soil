@@ -3,24 +3,24 @@
 	import LoadingSnake from "$lib/loading_snake.svelte";
 	import Title from '$lib/title.svelte';
 
-    export let table: []|null;
+    export let register_list: number[][]|null;
     export let title: string;
 
     function contains(i:number, j:number) {
         const start_index = ((i * 32) * 32) + (j * 32)
         const end_index = start_index + 31;
-        if (table == null) return false;
-        for (let cnt = 0; cnt < table?.length; cnt++) {
-            if (start_index <= table[cnt][0] && table[cnt][0] <= end_index) {
+        if (register_list == null) return false;
+        for (let cnt = 0; cnt < register_list?.length; cnt++) {
+            if (start_index <= register_list[cnt][0] && register_list[cnt][0] <= end_index) {
                 return true;
             }
-            if (start_index <= table[cnt][0] + table[cnt][1] && table[cnt][0] + table[cnt][1] <= end_index) {
+            if (start_index <= register_list[cnt][0] + register_list[cnt][1] && register_list[cnt][0] + register_list[cnt][1] <= end_index) {
                 return true;
             }
-            if (table[cnt][0] <= start_index && start_index <= table[cnt][0] + table[cnt][1]) {
+            if (register_list[cnt][0] <= start_index && start_index <= register_list[cnt][0] + register_list[cnt][1]) {
                 return true;
             }
-            if (table[cnt][0] <= end_index && end_index <= table[cnt][0] + table[cnt][1]) {
+            if (register_list[cnt][0] <= end_index && end_index <= register_list[cnt][0] + register_list[cnt][1]) {
                 return true;
             }
         }
@@ -30,7 +30,7 @@
 
 <div class="flex flex-col h-full">
     <p class="text-2xl mx-auto p-3">{title}</p>
-    {#if table == null}
+    {#if register_list == null}
         <div class="flex flex-col flex-grow justify-center">
             <LoadingSnake />
         </div>

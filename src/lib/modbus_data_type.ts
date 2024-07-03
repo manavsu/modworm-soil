@@ -8,7 +8,7 @@ export enum ModbusDataType {
 	Bool = 'bool'
 }
 
-export function data_type(type: ModbusDataType) {
+export function data_type_to_int(type: ModbusDataType) {
 	switch (type) {
 		case ModbusDataType.UInt16:
 			return 1;

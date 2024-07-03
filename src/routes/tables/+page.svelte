@@ -5,14 +5,15 @@
     import { BASE_URL } from '$lib/env'; 
     import LoadingSnake from '$lib/loading_snake.svelte';
     import Table from './table.svelte';
+    import type { TableStore } from '$lib/modbus_table';
+    import { ModbusTable } from '$lib/modbus_table';
     
-    let coil_table: []|null;
-    let discrete_input_table: []|null;
-    let holding_registers_table: []|null;
-    let input_registers_table: []|null;
+    let coil_table: number[][]|null;
+    let discrete_input_table: number[][]|null;
+    let holding_registers_table: number[][]|null;
+    let input_registers_table: number[][]|null;
 
     let device_info: any | null;
-
     let error: string | null = null;
     
     async function GetDeviceInfo(address:string, port:string, hard:boolean=false) {
@@ -103,10 +104,10 @@
             {/if}
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 p-2 mx-auto">
-            <a href="/registers" on:click={() => $CurrentTable = coil_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={coil_table} title="Coils"/></a>
-            <a href="/registers" on:click={() => $CurrentTable = discrete_input_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={discrete_input_table} title="Discrete Inputs"/></a>
-            <a href="/registers" on:click={() => $CurrentTable = holding_registers_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={holding_registers_table} title="Holding Registers"/></a>
-            <a href="/registers" on:click={() => $CurrentTable = input_registers_table} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table table={input_registers_table} title="Input Registers"/></a>
+            <a href="/registers" on:click={() => $CurrentTable = coil_table ? {register_list: coil_table, type: ModbusTable.Coils} : null} class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table register_list={coil_table} title="Coils"/></a>
+            <a href="/registers" on:click={() => $CurrentTable = discrete_input_table ? {register_list: discrete_input_table, type: ModbusTable.DiscreteInputs} : null}  class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table register_list={discrete_input_table} title="Discrete Inputs"/></a>
+            <a href="/registers" on:click={() => $CurrentTable = holding_registers_table ? {register_list: holding_registers_table, type: ModbusTable.HoldingRegisters} : null}  class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table register_list={holding_registers_table} title="Holding Registers"/></a>
+            <a href="/registers" on:click={() => $CurrentTable = input_registers_table ? {register_list: input_registers_table, type: ModbusTable.InputRegisters} : null}  class="flex flex-row justify-center items-center border-2 rounded-xl border-gray-600 text-gray-600 hover:text-white hover:border-white hover:scale-110 transition transition-duration-300 m-3 w-72" style="height: 37rem;"><Table register_list={input_registers_table} title="Input Registers"/></a>
         </div>
     {/if}
 </div>
