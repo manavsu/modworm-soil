@@ -56,15 +56,15 @@
 
 <style lang="postcss">
 	.grid-col-fill {
-		grid-template-columns: repeat(auto-fill, minmax(124px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
 	}
 </style>
 
 <div class="flex flex-row h-full">
-    <div class="flex flex-col items-center h-full min-w-32">
+    <div class="flex flex-col items-center h-full min-w-32 mt-9 gap-2 overscroll-auto">
     <div>Data Type</div>
     <div class="flex flex-row lg:flex-col">
-        <div class="flex flex-col justify-center">
+        <div class="flex flex-col justify-center gap-1">
             {#each Object.values(ModbusDataType) as data_type, i}
                 <input id={data_type + i} type="radio" bind:group={$SelectedDataType} value={data_type} class="sr-only">
                 <label for={data_type + i} class:text-gray-500={$SelectedDataType != data_type} class="mx-2 text-nowrap text-center hover:text-gray-200">{data_type}</label>
@@ -73,7 +73,7 @@
     </div>
     </div>
     <div class="h-full border border-gray-600"/>
-    <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full overflow-auto border w-full">
+    <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full overflow-auto w-full">
         <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2 p-2">
             {#if !error}
                 <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
@@ -91,7 +91,7 @@
                 <a href="/tables" class="border-2 px-10 py-2 mt-8 clickable border-white text-center">Tables</a>
             </div>
         {:else}
-            <div class="flex flex-col border w-full">
+            <div class="flex flex-col mx-2 p-2">
                 {#each register_groups as group}
                     <div class="grid grid-col-fill gap-1 justify-items-center">
                         {#each group.registers as register}

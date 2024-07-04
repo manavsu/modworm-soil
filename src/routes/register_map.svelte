@@ -55,7 +55,7 @@
 {:else if registers.length == 0}
     <LoadingSnake />
 {:else}
-	<div class="grid grid-col-fill justify-items-center">
+	<div class="grid grid-col-fill justify-items-center border">
 		{#each registers as reg, _}
 			<Register address={reg.address} value={reg.value} type={reg.type} />
 		{/each}
