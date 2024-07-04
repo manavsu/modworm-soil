@@ -1,3 +1,4 @@
+
 <script lang="ts">
   import '$lib/app.css';
 	import { Working } from '$lib/store';
@@ -43,7 +44,7 @@
     </div>
   </div>
   <div class="border border-gray-500"/>
-  <div class="flex-grow flex flex-col overscroll-contain overflow-auto m-4">
+  <div class="flex-grow flex flex-col overscroll-contain overflow-auto">
           <slot />
   </div>
 </div>

@@ -7,6 +7,7 @@
     import NetworkView from "./network_view.svelte";
     import { onMount } from "svelte";
     import { Working, ConnectedSocket} from "$lib/store";
+    import { goto } from "$app/navigation";
 
     let cidr = "";
     let ports = "";
@@ -129,6 +130,7 @@
             return;
         }
         ConnectedSocket.set(socket);
+        goto("/tables");
     }
 
     function OnScan(index: number) {
