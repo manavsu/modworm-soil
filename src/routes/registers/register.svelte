@@ -12,6 +12,6 @@
         <div class="text-xs">{address}</div>
         <div class="text-xs">{type}</div>
     </div>
-    <div class="border border-gray-600 ml-2 mr-4 min-h-8"></div>
-    <div class="min-w-14 text-center">{value}</div>
+    <div class="border border-gray-600 ml-2 mr-2 min-h-8"></div>
+    <div class="text-center w-full">{value}</div>
 </div>

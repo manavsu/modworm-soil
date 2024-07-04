@@ -82,7 +82,7 @@
     {#if $ConnectedSocket == null}
         <div class="flex flex-col justify-center items-center flex-grow text-2xl">
             <p class="text-center">No connected socket, scan and connect from the networks page.</p>
-            <a href="/network" class="border-2 px-10 py-2 mt-8 clickable border-white text-center">Networks</a>
+            <a href="/" class="border-2 px-10 py-2 mt-8 clickable border-white text-center">Networks</a>
         </div> 
     {:else}
         <div class="border-2 border-gray-600 rounded-xl m-2 p-4">

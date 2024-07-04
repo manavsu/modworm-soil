@@ -31,7 +31,7 @@
 <div class="flex flex-row h-dvh">
   <div class="flex flex-col">
     <div class="flex flex-col grow mt-5">
-      <a class="p-4 hover:scale-110 transitino duration-300 {path == "/network" ? "stroke-white" : "stroke-gray-500"}" href="/network"><NetworkIcon/></a>
+      <a class="p-4 hover:scale-110 transitino duration-300 {path == "/" ? "stroke-white" : "stroke-gray-500"}" href="/"><NetworkIcon/></a>
       <a class="p-4 hover:scale-110 transition duration-300 {path == "/tables" ? "stroke-white" : "stroke-gray-500"}" href="/tables"><TablesIcon/></a>
       <a class="p-4 hover:scale-110 transition duration-300 {path == "/registers" ? "stroke-white" : "stroke-gray-500"}" href="/registers"><RegistersIcon/></a>
     </div>
