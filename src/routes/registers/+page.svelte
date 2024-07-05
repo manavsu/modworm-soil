@@ -58,12 +58,12 @@
 	.grid-col-fill {
 		grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
 	}
+        /* Reset WebKit browsers (Chrome, Safari) scrollbar styles */
 </style>
 
 <div class="flex flex-row h-full">
-    <div class="flex flex-col items-center h-full min-w-32 mt-9 gap-2 overscroll-auto">
-    <div>Data Type</div>
-    <div class="flex flex-row lg:flex-col">
+    <div class="flex flex-col items-center min-w-32 gap-2 pt-9">
+        <div>Data Type</div>
         <div class="flex flex-col justify-center gap-1">
             {#each Object.values(ModbusDataType) as data_type, i}
                 <input id={data_type + i} type="radio" bind:group={$SelectedDataType} value={data_type} class="sr-only">
@@ -71,9 +71,8 @@
             {/each}
         </div>
     </div>
-    </div>
     <div class="h-full border border-gray-600"/>
-    <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full overflow-auto w-full">
+    <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full w-full overflow-auto scrollbar-thin">
         <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2 p-2">
             {#if !error}
                 <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">

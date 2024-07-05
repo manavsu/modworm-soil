@@ -26,7 +26,11 @@
   :global(.clickable) {
     @apply hover:scale-110 active:scale-110 transition duration-300 rounded-xl;
   }
-</style>
+  
+  * {
+    @apply scrollbar scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent;
+  }
+  </style>
 
 <div class="flex flex-row h-dvh">
   <div class="flex flex-col">
