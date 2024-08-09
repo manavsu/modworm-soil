@@ -58,7 +58,6 @@
 	.grid-col-fill {
 		grid-template-columns: repeat(auto-fill, minmax(144px, 1fr));
 	}
-        /* Reset WebKit browsers (Chrome, Safari) scrollbar styles */
 </style>
 
 <div class="flex flex-row h-full">
@@ -72,7 +71,7 @@
         </div>
     </div>
     <div class="h-full border border-gray-600"/>
-    <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full w-full overflow-auto scrollbar-thin">
+    <div in:fade={{delay: 200, duration:200}} class="flex flex-col h-full w-full">
         <div class="flex flex-col place-items-center border-2 border-gray-600 rounded-xl m-2 p-2">
             {#if !error}
                 <div in:fade={{delay: 200, duration:200}} class="flex flex-col justify-center h-14">
@@ -90,11 +89,11 @@
                 <a href="/tables" class="border-2 px-10 py-2 mt-8 clickable border-white text-center">Tables</a>
             </div>
         {:else}
-            <div class="flex flex-col mx-2 p-2">
+            <div class="flex flex-col mx-2 p-2 overflow-auto scrollbar-thin h-full">
                 {#each register_groups as group}
                     <div class="grid grid-col-fill gap-1 justify-items-center">
                         {#each group.registers as register}
-                            <Register value={register.value} address={register.address} type={register.type}/>
+                            <Register register={register}/>
                         {/each}
                     </div>
                 {/each}

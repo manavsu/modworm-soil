@@ -7,6 +7,7 @@
   import NetworkIcon from '$lib/icons/network_icon.svelte';
   import TablesIcon from '$lib/icons/tables_icon.svelte';
   import RegistersIcon from '$lib/icons/registers_icon.svelte';
+  import NamedRegisterIcon from '$lib/icons/named_register_icon.svelte';
   import { page } from '$app/stores'; 
 
   let path;
@@ -38,6 +39,7 @@
       <a class="p-4 hover:scale-110 transitino duration-300 {path == "/" ? "stroke-white" : "stroke-gray-500"}" href="/"><NetworkIcon/></a>
       <a class="p-4 hover:scale-110 transition duration-300 {path == "/tables" ? "stroke-white" : "stroke-gray-500"}" href="/tables"><TablesIcon/></a>
       <a class="p-4 hover:scale-110 transition duration-300 {path == "/registers" ? "stroke-white" : "stroke-gray-500"}" href="/registers"><RegistersIcon/></a>
+      <a class="p-4 hover:scale-110 transition duration-300 {path == "/named_registers" ? "stroke-white" : "stroke-gray-500"}" href="/named_registers"><NamedRegisterIcon/></a>
     </div>
     <div class="mx-auto min-h-16">
       {#if $Working}

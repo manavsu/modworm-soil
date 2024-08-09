@@ -2,9 +2,10 @@ add a ping feature to check on startup if the server is available
 drop down menus that fade everything in the back
 use ping feature to figure out if ports are open for use by simulators
 auto network mapping
-auto register map mapping
 read blocks
-ability to change the data type to view the data in
-better message tabs
+better message tabs -> add a game like thing on the right side of the scrren that stay show error messages.
 
 When sockets and network maps are store, ping every socket to see if its still online make it red if not
+use scapy instead of nmap
+
+Create my own modbus library which would be as simple as using an array
