@@ -48,7 +48,7 @@
             holding_registers_table = (await ScanTable(address, port, 3, hard));
             input_registers_table = (await ScanTable(address, port, 4, hard));
             await GetDeviceInfo(address, port, hard);
-        } catch (e) {
+        } catch (e: any) {
             error = e.message;
         }
 
